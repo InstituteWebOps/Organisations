@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                                     request =
                                             new GraphRequest(
                                                     key,
-                                                    post.id + "/likes?summary=true",
+                                                    post.id + "/reactions?summary=true",
                                                     null,
                                                     HttpMethod.GET,
                                                     new GraphRequest.Callback() {
