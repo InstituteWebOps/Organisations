@@ -48,6 +48,7 @@
         android:id="@+id/iv_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
+        android:src="@drawable/loading_icon"
         android:background="@drawable/image_border"
         android:adjustViewBounds="true"
         android:layout_below="@+id/tv_post_des"

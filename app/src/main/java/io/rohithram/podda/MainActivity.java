@@ -99,9 +99,10 @@ public class MainActivity extends AppCompatActivity {
                                                             JSONObject attach_dataJSONObject = attach_data.getJSONObject(0);
                                                             if(attach_dataJSONObject.has("media")){
                                                             JSONObject mediajson = attach_dataJSONObject.getJSONObject("media");
+                                                                if(mediajson.has("image")){
                                                             JSONObject imagejson = mediajson.getJSONObject("image");
                                                             post.img_url = imagejson.getString("src");
-                                                        }
+                                                        }}
                                                         }
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -60,18 +61,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
         imageLoader.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
 
         final String id = Postlist.get(holder.getAdapterPosition()).id;
-        Log.i("Xssffs", id);
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
 
     }
-
-
-
-
-
-
 
     @Override
     public int getItemCount() {
@@ -80,7 +74,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_post_des,tv_org;
-        public ImageView iv_content,iv_org;
+        public ImageView iv_content;
+        public ImageView iv_org;
         public LikeView fblike;
         public TextView tv_likes;
 
