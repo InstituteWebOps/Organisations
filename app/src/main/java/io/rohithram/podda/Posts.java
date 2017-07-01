@@ -5,7 +5,7 @@ package io.rohithram.podda;
  */
 
 public class Posts {
-    String message;
+    String message ;
     String id;
     public  String img_url;
     public int count;

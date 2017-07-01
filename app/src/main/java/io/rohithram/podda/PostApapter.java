@@ -55,7 +55,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        Log.i("Xscvf","Hello eneteefe");
+
         holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
+
+
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
         imageLoader.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
