@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         GraphGetRequest request = new GraphGetRequest();
         try {
-            request.dorequest(context, key, pageid + "/posts", null, progressBar, rv_list,adapter,postList);
+            request.dorequest(context, key, pageid + "/posts", null, progressBar,adapter,postList);
         } catch (Exception e) {
             e.printStackTrace();
         }
