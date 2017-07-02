@@ -12,11 +12,10 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_pod"
+        android:id="@+id/iv_org_profilepic"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:background="@drawable/image_border"
-        android:src="@drawable/podda"
         android:layout_margin="8dp" />
     <TextView
         android:id="@+id/tv_org"
@@ -24,16 +23,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/iv_pod"
+        android:layout_toRightOf="@+id/iv_org_profilepic"
         android:layout_marginTop="10dp"
         android:textColor="@color/com_facebook_blue"
-        android:text="Pod, da" />
+        android:text=" " />
 
     <TextView
         android:id="@+id/tv_post_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_pod"
+        android:layout_below="@+id/iv_org_profilepic"
         android:textColor="#000000"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"

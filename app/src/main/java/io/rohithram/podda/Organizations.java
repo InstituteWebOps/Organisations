@@ -23,7 +23,7 @@ public class Organizations extends AppCompatActivity {
     public ImageView iv_org_logo;
     public RecyclerView rv_org_list;
     public OrganisationAdapter adapter;
-    public ProgressBar progressBar;
+
     Context context;
 
 
@@ -38,7 +38,6 @@ public class Organizations extends AppCompatActivity {
 
         tv_org_name = (TextView) findViewById(R.id.tv_post_des);
         iv_org_logo = (ImageView) findViewById(R.id.iv_content);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         orgsList = new ArrayList<OrganisationObject>();
 
@@ -74,7 +73,7 @@ public class Organizations extends AppCompatActivity {
         organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/p160x160/10492125_675662332488734_2137650625274591896_n.jpg?oh=26b2dae6ce01d4729b5377bcca462444&oe=5A0C4EF1","Oratory Club",7);
         orgsList.add(organisation);
 
-        organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/c0.0.60.60/p60x60/12715754_830292763781197_3324673058940651005_n.jpg?oh=3e6ff89135d77fce1688bbe14e090cf0&oe=5A0A634E","SLC IITM",8);
+        organisation = new OrganisationObject("https://scontent-sin6-2.xx.fbcdn.net/v/t31.0-8/13909376_1229422713735894_5049285609096326983_o.jpg?oh=5bf75e7c179c0fb667c2b51c481c6656&oe=59D7A4F2","SLC IITM",8);
         orgsList.add(organisation);
 
         organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/p100x100/155990_173670326109472_994519463_n.jpg?oh=9c60a9b66675ac49473d656ebd808abb&oe=59D9D860","IIT Madras sports",9);
@@ -95,10 +94,10 @@ public class Organizations extends AppCompatActivity {
         organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/c22.22.276.276/p320x320/1005069_478420812250697_314656219_n.png?oh=236c4525e1b8b75239a52a6a1f4a10e3&oe=5A072E2C","MITR",14);
         orgsList.add(organisation);
 
-        organisation = new OrganisationObject("","Saathi",15);
+        organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/p160x160/13692609_660255010795090_4690149022822602562_n.jpg?oh=e7ac1c42e2820ecea1ad43b86b880499&oe=59D424CB","Saathi",15);
         orgsList.add(organisation);
 
-        organisation = new OrganisationObject("","EML",16);
+        organisation = new OrganisationObject("https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-1/p160x160/10678764_548402891961076_62779937181075368_n.png?oh=52f1d8d6de891a8856b4d163f25698ce&oe=5A0E93D9","EML",16);
         orgsList.add(organisation);
 
         return null;

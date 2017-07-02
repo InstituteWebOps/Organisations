@@ -2,25 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_title"
-        android:text="Organisations in "
+        android:text=" Organisations "
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
         android:textColor="#000000"
-        android:shadowColor="#ffffff"
         android:textSize="24dp"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/IITM_Color_Logo"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="50dp"
-        android:scaleType="fitXY"
-        android:layout_toRightOf="@+id/tv_title"
-        android:layout_alignBottom="@+id/tv_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
