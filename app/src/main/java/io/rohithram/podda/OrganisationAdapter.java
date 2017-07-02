@@ -1,6 +1,7 @@
 package io.rohithram.podda;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,26 +49,12 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
         holder.cv_org_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (OrgList.get(holder.getAdapterPosition()).org_identity){
-                    case 1: break;
-                    case 2:break;
-                    case 3:break;
-                    case 4:break;
-                    case 5:break;
-                    case 6:break;
-                    case 7:break;
-                    case 8:break;
-                    case 9:break;
-                    case 10:break;
-                    case 11:break;
-                    case 12:break;
-                    case 13:break;
-                    case 14:break;
-                    case 15:break;
-                    case 16:break;
+                Intent i = new Intent(context,MainActivity.class);
+                i.putExtra("pageid",OrgList.get(holder.getAdapterPosition()).pageid);
+                i.putExtra("Pagename",OrgList.get(holder.getAdapterPosition()).org_name);
+                i.putExtra("logo_url",OrgList.get(holder.getAdapterPosition()).logo_url);
+                //i.StartActivity(i);
 
-
-                }
             }
         });
 
