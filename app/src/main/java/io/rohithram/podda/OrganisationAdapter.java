@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.share.widget.LikeView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,13 +18,14 @@ import java.util.List;
 
 public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapter.ViewHolder> {
 
-    List<Orgs> Orgs;
+    List<OrganisationObject> OrgList;
     Context context;
 
 
-    public OrganisationAdapter(Context context,List<Orgs> Orgs) {
+
+    public OrganisationAdapter(Context context,List<OrganisationObject> OrgList) {
         this.context = context;
-        this.Orgs = Orgs;
+        this.OrgList = OrgList;
 
     }
 
@@ -40,16 +38,16 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
 
     @Override
     public void onBindViewHolder(OrganisationAdapter.ViewHolder holder, int position) {
-        holder.tv_org_name.setText(Orgs.get(holder.getAdapterPosition()).org_name);
+        holder.tv_org_name.setText(OrgList.get(holder.getAdapterPosition()).org_name);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
-        imageLoader.displayImage(Orgs.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
+        imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
 
     }
 
     @Override
     public int getItemCount() {
-        return Orgs.size();
+        return OrgList.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView iv_org_logo;
