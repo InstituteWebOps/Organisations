@@ -1,13 +1,24 @@
 package io.rohithram.podda;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.SurfaceTexture;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.facebook.AccessToken;
 import com.facebook.share.widget.LikeView;
@@ -20,12 +31,15 @@ import java.util.List;
  * Created by rohithram on 23/6/17.
  */
 
-public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
+public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  {
+
     Context context;
     List<Posts> Postlist;
     AccessToken key;
     String pagename;
     String logo_url;
+
+
 
     public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url) {
         this.context = context;
@@ -43,14 +57,15 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.tv_org.setText(pagename);
+        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
         imageLoader.displayImage(logo_url,holder.iv_org);
 
-        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
+        Log.i("Dsfsa","EnTered");
 
         ImageLoader imageLoader1 = ImageUtil.getImageLoader(this.context);
         imageLoader1.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
@@ -58,12 +73,24 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
 
+        if(Postlist.get(holder.getAdapterPosition()).type.equals("video")) {
+            holder.iv_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MainActivity activity = new MainActivity();
+                    activity.initiatePopupWindow(v,Postlist.get(holder.getAdapterPosition()).vid_url);
+                }
+            });
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return Postlist.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_post_des,tv_org;
@@ -84,8 +111,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
             fblike.setAuxiliaryViewPosition(LikeView.AuxiliaryViewPosition.INLINE);
             tv_likes = (TextView)itemView.findViewById(R.id.tv_likes);
 
-
         }
     }
+    
+
 }
 

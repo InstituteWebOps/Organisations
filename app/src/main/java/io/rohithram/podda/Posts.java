@@ -9,6 +9,8 @@ public class Posts {
     String id;
     public  String img_url;
     public int count;
+    public String vid_url;
+    public String type;
 
     public Posts(String message,String id){
         this.message = message;
