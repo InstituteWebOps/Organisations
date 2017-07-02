@@ -60,20 +60,23 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.tv_org.setText(pagename);
-        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
         imageLoader.displayImage(logo_url,holder.iv_org);
 
-        Log.i("Dsfsa","EnTered");
+        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
+
+
 
         ImageLoader imageLoader1 = ImageUtil.getImageLoader(this.context);
         imageLoader1.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
+        String type = Postlist.get(holder.getAdapterPosition()).type;
+        if( type == ("video" )) {
+            Log.i("Dsfsa","EnTered");
 
-        if(Postlist.get(holder.getAdapterPosition()).type.equals("video")) {
             holder.iv_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
