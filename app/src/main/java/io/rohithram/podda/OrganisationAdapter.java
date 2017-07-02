@@ -46,14 +46,16 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
         imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
 
         holder.cv_org_item.setFocusable(true);
+
         holder.cv_org_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(context,MainActivity.class);
                 i.putExtra("pageid",OrgList.get(holder.getAdapterPosition()).pageid);
-                i.putExtra("Pagename",OrgList.get(holder.getAdapterPosition()).org_name);
+                i.putExtra("pagename",OrgList.get(holder.getAdapterPosition()).org_name);
                 i.putExtra("logo_url",OrgList.get(holder.getAdapterPosition()).logo_url);
-                //i.StartActivity(i);
+                context.startActivity(i);
 
             }
         });

@@ -24,11 +24,16 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
     Context context;
     List<Posts> Postlist;
     AccessToken key;
+    String pagename;
+    String logo_url;
 
-    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key) {
+    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url) {
         this.context = context;
         this.Postlist = postList;
         this.key = key;
+        this.pagename = pagename;
+        this.logo_url = logo_url;
+
     }
 
     @Override
@@ -40,11 +45,15 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        holder.tv_org.setText(pagename);
+
+        ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
+        imageLoader.displayImage(logo_url,holder.iv_org);
 
         holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
 
-        ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
-        imageLoader.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
+        ImageLoader imageLoader1 = ImageUtil.getImageLoader(this.context);
+        imageLoader1.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 

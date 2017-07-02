@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,13 +30,12 @@ import org.json.JSONObject;
 
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+
 
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv_post_des,tv_org;
-    ImageView iv_org_profilepic;
+    TextView tv_post_des;
     ArrayList<Posts> postList;
     AccessToken key;
     public ImageView iv_content;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public PostApapter adapter;
     public ProgressBar progressBar;
     Context context;
+
 
 
     @Override
@@ -70,19 +71,15 @@ public class MainActivity extends AppCompatActivity {
         tv_post_des = (TextView) findViewById(R.id.tv_post_des);
         iv_content = (ImageView) findViewById(R.id.iv_content);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        tv_org = (TextView) findViewById(R.id.tv_org);
-        iv_org_profilepic = (ImageView) findViewById(R.id.iv_org_profilepic);
 
-        tv_org.setText(Pagename);
 
-        ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
-        imageLoader.displayImage(logo_url,iv_org_profilepic);
+
 
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         postList = new ArrayList<>();
-        adapter = new PostApapter(MainActivity.this,postList, key);
+        adapter = new PostApapter(MainActivity.this,postList, key,Pagename,logo_url);
         rv_list.setAdapter(adapter);
 
         /* make the API call */
