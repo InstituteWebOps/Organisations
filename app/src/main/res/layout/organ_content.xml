@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/cv_org_name"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="12dp"
+        android:contextClickable="true"
+        android:longClickable="true"
+        android:layout_marginTop="4dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/podda"
+            android:id="@+id/iv_org_logo"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_border"
+            android:contextClickable="true"
+            android:longClickable="true"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:alpha="0.7"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#37474f"
+            android:text="Org_name"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:alpha="0.7"
+            android:layout_marginTop="82dp"
+            android:contextClickable="true"
+            android:longClickable="true"
+            android:focusableInTouchMode="true"
+            android:selectAllOnFocus="true"
+            android:id="@+id/tv_org_name"
+            android:textColor="#FFFFFF"
+            android:textAppearance="@style/Base.ThemeOverlay.AppCompat.Dark"
+            >
+
+        </TextView>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
