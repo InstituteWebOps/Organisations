@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -12,6 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,6 +58,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     android.support.v4.app.FragmentManager fm;
     VideoFragment fragment;
     FrameLayout mainlayout;
+    public static final int FROM_HTML_MODE_LEGACY = 0;
 
 
 
@@ -79,6 +87,10 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
+        String type = Postlist.get(holder.getAdapterPosition()).type;
+        String  s = "video";
+        final String s1 = "youtube.com";
+
         holder.tv_org.setText(pagename);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
@@ -91,26 +103,30 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
-        String type = Postlist.get(holder.getAdapterPosition()).type;
-        String  s = "video";
        if( type!=null && type.equalsIgnoreCase(s)) {
+           holder.iv_content.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
 
-            holder.iv_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                       if (!Postlist.get(holder.getAdapterPosition()).vid_url.toLowerCase().contains(s1.toLowerCase())) {
+                           Bundle args = new Bundle();
+                           args.putString("video_url", Postlist.get(holder.getAdapterPosition()).vid_url);
+                           fragment.setArguments(args);
+                           android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
+                           transaction.replace(R.id.fragment_container, fragment);
+                           transaction.addToBackStack(null);
+                           transaction.commit();
+                       } else {
+                           context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Postlist.get(holder.getAdapterPosition()).vid_url)));
+                           Log.i("Video", "Video Playing....");
 
-                    Bundle args = new Bundle();
-                    args.putString("video_url",Postlist.get(holder.getAdapterPosition()).vid_url);
-                    fragment.setArguments(args);
-                    android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.fragment_container,fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
-       }
-
+                       }
+                   }
+               });
+           }
     }
+
+
 
     @Override
     public int getItemCount() {

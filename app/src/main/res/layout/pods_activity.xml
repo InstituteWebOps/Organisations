@@ -42,8 +42,6 @@
         android:textSize="16dp"
         android:text="TextView" />
 
-
-
     <ImageView
         android:layout_width="match_parent"
         android:id="@+id/iv_content"
@@ -54,9 +52,11 @@
         android:adjustViewBounds="true"
         android:clickable="true"
         android:contextClickable="true"
-        android:longClickable="true"
         android:layout_below="@+id/tv_post_des"
+        android:longClickable="true"
         android:layout_margin="8dp"/>
+
+
 
     <View
         android:layout_width="match_parent"
