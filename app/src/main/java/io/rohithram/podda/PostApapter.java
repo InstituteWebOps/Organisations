@@ -20,6 +20,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.PopupWindow;
@@ -49,11 +50,12 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     String logo_url;
     android.support.v4.app.FragmentManager fm;
     VideoFragment fragment;
+    FrameLayout mainlayout;
 
 
 
 
-    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, android.support.v4.app.FragmentManager fragmentManager, VideoFragment fragment) {
+    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, android.support.v4.app.FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu) {
         this.context = context;
         this.Postlist = postList;
         this.key = key;
@@ -61,7 +63,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.logo_url = logo_url;
         this.fm = fragmentManager;
         this.fragment = fragment;
-
+        this.mainlayout = layout_MainMenu;
 
     }
     MainActivity myActivity = (MainActivity) context;

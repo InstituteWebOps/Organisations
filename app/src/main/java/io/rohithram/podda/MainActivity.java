@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
     public ProgressBar progressBar;
     Context context;
     VideoView vid_post;
+    static FrameLayout layout_MainMenu;
 
 
 
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.posts_activity);
+
+        layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
+        layout_MainMenu.getForeground().setAlpha( 0);
 
 
         String apptoken = getString(R.string.Apptoken);
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         postList = new ArrayList<>();
-        adapter = new PostApapter(MainActivity.this, postList, key, Pagename, logo_url, fragmentManager, fragment);
+        adapter = new PostApapter(MainActivity.this, postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu);
         rv_list.setAdapter(adapter);
 
         /* make the API call */
@@ -122,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    public static void dim(){
+        layout_MainMenu.getForeground().setAlpha(160);
+    }
+    public static void normal(){
+        layout_MainMenu.getForeground().setAlpha(0);
     }
 }
 
