@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Podda</string>
+    <string name="facebook_app_id">"1603783242966288"</string>
+    <string name="Apptoken">"1603783242966288|qUaJ38IHfs6nIKpoDF53PoqnhtU"</string>
+    <string name="pageid">"884294325001601"</string>
+    <string name="userid">"1834695056756669"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="Listofpagenames">
+    <item> "Mediaclubiitm/"</item>
+    <item> "IITPodDa/"</item>
+    <item>"fineartsclubiitmadras/"</item>
+    <item>"cfiiitm/"</item>
+    <item>"ReachIITM/"</item>
+    <item>"saarangiitm/"</item>
+    <item>"theoratoryclubiitm/"</item>
+    <item>"SLCIITMadras/"</item>
+    <item>"SportsIITM/"</item>
+    <item>"nss.iitm/"</item>
+    <item>"Shaastra/"</item>
+    <item>"iitmtv/"</item>
+    <item>"iar.iitmadras/"</item>
+    <item>"mitr.iitm/"</item>
+    <item>"saathi.iitm/"</item>
+    <item>"eml.iitm/"</item></string-array>
+</resources>

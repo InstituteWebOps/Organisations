@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/cv_org_name"
+        android:layout_height="160dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="4dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:id="@+id/iv_org_logo"
+            android:layout_margin="2dp"
+            android:background="@drawable/image_border"
+            android:scaleType="fitXY"
+            android:alpha="0.85"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_org_logo"
+                android:id="@+id/tv_org_name"
+                android:text="TextView"
+                android:textSize="16dp"
+                android:layout_margin="4dp"
+                android:textStyle="bold"
+                android:textColor="#000000"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_org_name"
+                android:layout_toRightOf="@+id/iv_org_logo"
+                android:id="@+id/tv_org_about"
+                android:scrollHorizontally="true"
+                android:maxLines="6"
+                android:ellipsize="end"
+                android:textSize="14dp"
+                android:textColor="#607d8b"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="About"/>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
