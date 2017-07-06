@@ -18,6 +18,7 @@ import com.facebook.AccessTokenSource;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ public class Organizations extends AppCompatActivity {
     String[] PagesList;
     Context context;
     AccessToken key;
+    com.android.volley.toolbox.ImageLoader mImageLoader;
     @Override
     protected void onCreate(Bundle onRetainNonConfigurationChanges) {
         super.onCreate(onRetainNonConfigurationChanges);
@@ -56,6 +58,12 @@ public class Organizations extends AppCompatActivity {
         orgsList = new ArrayList<OrganisationObject>();
 
         PagesList = getResources().getStringArray(R.array.Listofpagenames);
+
+        // Instantiate the RequestQueue.
+        mImageLoader = MySingleton.getInstance(this.getApplicationContext())
+                .getImageLoader();
+        //Image URL - This can point to any image file supported by Android
+
 
         final ProgressDialog pd = new ProgressDialog(Organizations.this);
         pd.setMessage("Loading Organisations");
@@ -83,7 +91,7 @@ public class Organizations extends AppCompatActivity {
                             } finally {
                                 pd.dismiss();
                                 orgsList.add(org);
-                                adapter = new OrganisationAdapter(Organizations.this, orgsList);
+                                adapter = new OrganisationAdapter(Organizations.this, orgsList,mImageLoader);
                                 rv_org_list.setAdapter(adapter);
                             }
                         }

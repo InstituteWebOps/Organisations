@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.facebook.AccessToken;
 import com.facebook.share.widget.LikeView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -44,11 +45,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     VideoFragment fragment;
     FrameLayout mainlayout;
     ProgressDialog pd;
+    com.android.volley.toolbox.ImageLoader mImageLoader;
 
 
 
-
-    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu, ProgressDialog pd) {
+    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu, ProgressDialog pd, com.android.volley.toolbox.ImageLoader mImageLoader) {
         this.context = context;
         this.Postlist = postList;
         this.key = key;
@@ -58,6 +59,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.fragment = fragment;
         this.mainlayout = layout_MainMenu;
         this.pd = pd;
+        this.mImageLoader = mImageLoader;
 
     }
 
@@ -81,13 +83,25 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         holder.tv_org.setText(pagename);
         holder.tv_time.setText(datetime);
 
-        ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
-        imageLoader.displayImage(logo_url,holder.iv_org);
+        mImageLoader.get(logo_url, com.android.volley.toolbox.ImageLoader.getImageListener(holder.iv_org
+                ,R.drawable.loading_icon
+                ,android.R.drawable.ic_dialog_alert));
+
+        holder.iv_org.setImageUrl(logo_url, mImageLoader);
+
+        // ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
+       // imageLoader.displayImage(logo_url,holder.iv_org);
 
         holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
 
-        ImageLoader imageLoader1 = ImageUtil.getImageLoader(this.context);
-        imageLoader1.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
+        //ImageLoader imageLoader1 = ImageUtil.getImageLoader(this.context);
+        //imageLoader1.displayImage(Postlist.get(holder.getAdapterPosition()).img_url,holder.iv_content);
+
+        mImageLoader.get(Postlist.get(holder.getAdapterPosition()).img_url, com.android.volley.toolbox.ImageLoader.getImageListener(holder.iv_content
+                ,R.drawable.loading_icon
+                ,android.R.drawable.ic_dialog_alert));
+
+        holder.iv_content.setImageUrl(Postlist.get(holder.getAdapterPosition()).img_url, mImageLoader);
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
@@ -147,8 +161,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_post_des, tv_org;
         public CardView cv_post;
-        public ImageView iv_content;
-        public ImageView iv_org;
+        public NetworkImageView iv_content;
+        public NetworkImageView iv_org;
         public LikeView fblike;
         public TextView tv_likes,tv_time;
 
@@ -158,8 +172,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             tv_post_des = (TextView) itemView.findViewById(R.id.tv_post_des);
             tv_org = (TextView) itemView.findViewById(R.id.tv_org);
             cv_post = (CardView) itemView.findViewById(R.id.cv_post);
-            iv_org = (ImageView) itemView.findViewById(R.id.iv_org_profilepic);
-            iv_content = (ImageView) itemView.findViewById(R.id.iv_content);
+            iv_org = (NetworkImageView) itemView.findViewById(R.id.iv_org_profilepic);
+            iv_content = (NetworkImageView) itemView.findViewById(R.id.iv_content);
             fblike = (LikeView) itemView.findViewById(R.id.fb_like);
             fblike.setLikeViewStyle(LikeView.Style.STANDARD);
             fblike.setAuxiliaryViewPosition(LikeView.AuxiliaryViewPosition.INLINE);

@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenSource;
 import com.facebook.FacebookSdk;
@@ -35,6 +36,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public ProgressBar progressBar;
     Context context;
     static FrameLayout layout_MainMenu;
+    ImageLoader mImageLoader;
 
 
     @Override
@@ -96,9 +98,12 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
 
         postList = new ArrayList<>();
+// Instantiate the RequestQueue.
+        mImageLoader = MySingleton.getInstance(this.getApplicationContext())
+                .getImageLoader();
+        //Image URL - This can point to any image file supported by Android
 
-
-        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd);
+        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd,mImageLoader);
         rv_list.setAdapter(adapter);
 
         /* make the API call */
