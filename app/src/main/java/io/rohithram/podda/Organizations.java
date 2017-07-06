@@ -1,7 +1,9 @@
 package io.rohithram.podda;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,19 +29,12 @@ public class Organizations extends AppCompatActivity {
 
     TextView tv_org_name;
     List<OrganisationObject> orgsList;
-    OrganisationObject organisation;
-
-
     public ImageView iv_org_logo;
     public RecyclerView rv_org_list;
     public OrganisationAdapter adapter;
-
     String[] PagesList;
     Context context;
     AccessToken key;
-
-
-
     @Override
     protected void onCreate(Bundle onRetainNonConfigurationChanges) {
         super.onCreate(onRetainNonConfigurationChanges);
@@ -62,6 +57,10 @@ public class Organizations extends AppCompatActivity {
 
         PagesList = getResources().getStringArray(R.array.Listofpagenames);
 
+        final ProgressDialog pd = new ProgressDialog(Organizations.this);
+        pd.setMessage("Loading Organisations");
+        pd.show();
+
         for(int i=0;i<PagesList.length;i++){
             GraphRequest request = new GraphRequest(
                     key,
@@ -82,6 +81,7 @@ public class Organizations extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } finally {
+                                pd.dismiss();
                                 orgsList.add(org);
                                 adapter = new OrganisationAdapter(Organizations.this, orgsList);
                                 rv_org_list.setAdapter(adapter);

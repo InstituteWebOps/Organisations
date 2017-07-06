@@ -23,14 +23,11 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
     List<OrganisationObject> OrgList;
     Context context;
 
-
-
     public OrganisationAdapter(Context context,List<OrganisationObject> OrgList) {
         this.context = context;
         this.OrgList = OrgList;
 
     }
-
 
     @Override
     public OrganisationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,7 +51,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(context,MainActivity.class);
+                Intent i = new Intent(context,PostActivity.class);
                 i.putExtra("pageid",OrgList.get(holder.getAdapterPosition()).pageid);
                 i.putExtra("pagename",OrgList.get(holder.getAdapterPosition()).org_name);
                 i.putExtra("logo_url",OrgList.get(holder.getAdapterPosition()).logo_url);
@@ -62,8 +59,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
 
             }
         });
-
-
 
     }
 

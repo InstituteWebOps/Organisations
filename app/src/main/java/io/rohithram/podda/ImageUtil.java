@@ -17,10 +17,8 @@ public class ImageUtil {
 
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
-                .showImageOnFail(R.drawable.podda)
+                .showImageOnFail(R.drawable.image_not_found)
                 .showImageOnLoading(R.drawable.loading_icon).build();
-
-
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCacheSize(2 * 1024 * 1024)

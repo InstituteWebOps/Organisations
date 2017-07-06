@@ -1,5 +1,7 @@
 package io.rohithram.podda;
 
+import java.util.Date;
+
 /**
  * Created by rohithram on 23/6/17.
  */
@@ -11,6 +13,7 @@ public class Posts {
     public int count;
     public String vid_url;
     public String type;
+    public String created_time;
 
     public Posts(String message,String id){
         this.message = message;

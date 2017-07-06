@@ -1,48 +1,33 @@
 package io.rohithram.podda;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.SurfaceTexture;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.facebook.AccessToken;
 import com.facebook.share.widget.LikeView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by rohithram on 23/6/17.
@@ -58,12 +43,12 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     android.support.v4.app.FragmentManager fm;
     VideoFragment fragment;
     FrameLayout mainlayout;
-    public static final int FROM_HTML_MODE_LEGACY = 0;
+    ProgressDialog pd;
 
 
 
 
-    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, android.support.v4.app.FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu) {
+    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu, ProgressDialog pd) {
         this.context = context;
         this.Postlist = postList;
         this.key = key;
@@ -72,9 +57,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.fm = fragmentManager;
         this.fragment = fragment;
         this.mainlayout = layout_MainMenu;
+        this.pd = pd;
 
     }
-    MainActivity myActivity = (MainActivity) context;
 
 
 
@@ -90,8 +75,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         String type = Postlist.get(holder.getAdapterPosition()).type;
         String  s = "video";
         final String s1 = "youtube.com";
+        String strDate = Postlist.get(holder.getAdapterPosition()).created_time ;
+        String datetime = GetLocalDateStringFromUTCString(strDate);
 
         holder.tv_org.setText(pagename);
+        holder.tv_time.setText(datetime);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
         imageLoader.displayImage(logo_url,holder.iv_org);
@@ -103,22 +91,25 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
         holder.tv_likes.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).count));
 
+
+
        if( type!=null && type.equalsIgnoreCase(s)) {
            holder.iv_content.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
 
                        if (!Postlist.get(holder.getAdapterPosition()).vid_url.toLowerCase().contains(s1.toLowerCase())) {
+
                            Bundle args = new Bundle();
                            args.putString("video_url", Postlist.get(holder.getAdapterPosition()).vid_url);
-                           fragment.setArguments(args);
+                           fragment.getArguments().putAll(args);
                            android.support.v4.app.FragmentTransaction transaction = fm.beginTransaction();
                            transaction.replace(R.id.fragment_container, fragment);
                            transaction.addToBackStack(null);
                            transaction.commit();
+
                        } else {
                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Postlist.get(holder.getAdapterPosition()).vid_url)));
-                           Log.i("Video", "Video Playing....");
 
                        }
                    }
@@ -127,6 +118,24 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     }
 
 
+    public String GetLocalDateStringFromUTCString(String utcLongDateTime) {
+        SimpleDateFormat fb_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZZZZZ",Locale.getDefault());
+
+        SimpleDateFormat my_dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+
+
+        String localDateString = null;
+
+        long when = 0;
+        try {
+            when = fb_dateFormat.parse(utcLongDateTime).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        localDateString = my_dateFormat.format(new Date(when + TimeZone.getDefault().getRawOffset() + (TimeZone.getDefault().inDaylightTime(new Date()) ? TimeZone.getDefault().getDSTSavings() : 0)));
+        return localDateString;
+    }
 
     @Override
     public int getItemCount() {
@@ -141,7 +150,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         public ImageView iv_content;
         public ImageView iv_org;
         public LikeView fblike;
-        public TextView tv_likes;
+        public TextView tv_likes,tv_time;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -155,6 +164,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             fblike.setLikeViewStyle(LikeView.Style.STANDARD);
             fblike.setAuxiliaryViewPosition(LikeView.AuxiliaryViewPosition.INLINE);
             tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
+            tv_time = (TextView)itemView.findViewById(R.id.tv_time);
 
         }
 
