@@ -8,13 +8,13 @@ public class OrganisationObject {
     String logo_url;
     String org_name;
     String pageid;
-    int org_identity;
+    String org_about;
 
-    public  OrganisationObject(String logo_url,String org_name,String pageid,int org_identity){
+    public  OrganisationObject(String logo_url,String org_name,String pageid,String org_about){
         this.logo_url = logo_url;
         this.org_name = org_name;
         this.pageid = pageid;
-        this.org_identity = org_identity;
+        this.org_about = org_about;
 
     }
 

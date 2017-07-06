@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -42,14 +43,12 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
     static FrameLayout layout_MainMenu;
 
 
-
-
-
     @Override
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle onRetainNonConfigurationChanges) {
+        super.onCreate(onRetainNonConfigurationChanges);
         setContentView(R.layout.posts_activity);
+
+
 
         layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
         layout_MainMenu.getForeground().setAlpha( 0);
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnF
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
+            if (onRetainNonConfigurationChanges != null) {
                 return;
             }
 

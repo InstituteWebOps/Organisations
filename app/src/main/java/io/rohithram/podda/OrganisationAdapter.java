@@ -40,7 +40,10 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
 
     @Override
     public void onBindViewHolder(final OrganisationAdapter.ViewHolder holder, int position) {
+
         holder.tv_org_name.setText(OrgList.get(holder.getAdapterPosition()).org_name);
+        String about = OrgList.get(holder.getAdapterPosition()).org_about;
+        holder.tv_org_about.setText(about);
 
         ImageLoader imageLoader = ImageUtil.getImageLoader(this.context);
         imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
@@ -70,14 +73,16 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView iv_org_logo;
-        public TextView tv_org_name;
+        public TextView tv_org_name,tv_org_about;
         public CardView cv_org_item;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             iv_org_logo = (ImageView)itemView.findViewById(R.id.iv_org_logo);
             tv_org_name = (TextView)itemView.findViewById(R.id.tv_org_name);
             cv_org_item = (CardView)itemView.findViewById(R.id.cv_org_name);
+            tv_org_about =(TextView)itemView.findViewById(R.id.tv_org_about);
 
 
         }
