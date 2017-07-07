@@ -36,7 +36,6 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public ProgressBar progressBar;
     Context context;
     static FrameLayout layout_MainMenu;
-    ImageLoader mImageLoader;
 
 
     @Override
@@ -98,12 +97,8 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
 
         postList = new ArrayList<>();
-// Instantiate the RequestQueue.
-        mImageLoader = MySingleton.getInstance(this.getApplicationContext())
-                .getImageLoader();
-        //Image URL - This can point to any image file supported by Android
 
-        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd,mImageLoader);
+        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd);
         rv_list.setAdapter(adapter);
 
         /* make the API call */

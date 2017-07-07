@@ -63,12 +63,13 @@ public class GraphGetRequest  {
                                                     try {
                                                         JSONObject jsonresponse2 = new JSONObject(String.valueOf(response.getJSONObject()));
                                                         post.type = jsonresponse2.getString("type");
+                                                        if(!post.type.equalsIgnoreCase("status")){
                                                         if(jsonresponse2.has("full_picture")){
                                                             post.img_url = jsonresponse2.getString("full_picture");
                                                         }
                                                         if(jsonresponse2.getString("type").equals("video")){
                                                                 post.vid_url = jsonresponse2.getString("source");
-                                                            }
+                                                            }}
                                                         /*if(jsonresponse2.has("attachments")){
                                                         JSONObject attachments = jsonresponse2.getJSONObject("attachments");
                                                         JSONArray attach_data = attachments.getJSONArray("data");

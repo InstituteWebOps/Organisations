@@ -12,7 +12,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/iv_org_profilepic"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -53,12 +53,11 @@
         android:textSize="16dp"
         android:text="TextView" />
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:layout_width="match_parent"
         android:id="@+id/iv_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@drawable/loading_icon"
         android:background="@drawable/image_border"
         android:adjustViewBounds="true"
         android:clickable="true"

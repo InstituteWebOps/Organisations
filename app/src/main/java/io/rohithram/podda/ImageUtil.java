@@ -5,6 +5,8 @@ import android.content.Context;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 
 public class ImageUtil {
@@ -17,12 +19,14 @@ public class ImageUtil {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
                 .showImageOnFail(R.drawable.image_not_found)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(1000))
                 .showImageOnLoading(R.drawable.loading_icon).build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .memoryCacheSize(2 * 1024 * 1024)
-                .diskCacheSize(50 * 1024 * 1024)
-                .diskCacheFileCount(100)
+                .memoryCacheSize(20 * 1024 * 1024)
+                .diskCacheSize(500 * 1024 * 1024)
+                .diskCacheFileCount(1000)
                 .defaultDisplayImageOptions(options)
                 .writeDebugLogs()
                 .build();
