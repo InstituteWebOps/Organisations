@@ -91,7 +91,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org);
 
-            if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo")){
+        if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ){
             Glide.with(context)
                     .load(Postlist.get(holder.getAdapterPosition()).img_url)
                     .error(null)
