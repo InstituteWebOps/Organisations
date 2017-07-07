@@ -86,16 +86,24 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         Glide.with(context)
                 .load(logo_url)
                 .placeholder(R.drawable.loading_icon)
-                .crossFade(1000)
+                .error(null)
+                .crossFade(500)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org);
 
+            if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo")){
             Glide.with(context)
                     .load(Postlist.get(holder.getAdapterPosition()).img_url)
                     .error(null)
-                    .crossFade(1000)
+                    .placeholder(R.drawable.loading_icon)
+                    .crossFade(500)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.iv_content);
+                    .into(holder.iv_content);}
+        else {
+                // make sure Glide doesn't load anything into this view until told otherwise
+                Glide.clear(holder.iv_content);
+                holder.iv_content.setImageDrawable(null);
+            }
 
 
         //imageLoader.displayImage(logo_url,holder.iv_org);

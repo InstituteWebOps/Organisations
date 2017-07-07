@@ -56,7 +56,8 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
         Glide.with(context)
                 .load(OrgList.get(holder.getAdapterPosition()).logo_url)
                 .placeholder(R.drawable.loading_icon)
-                .crossFade(1000)
+                .crossFade(500)
+                .error(null)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org_logo);
        //imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
