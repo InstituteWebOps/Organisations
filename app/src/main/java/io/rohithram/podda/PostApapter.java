@@ -36,7 +36,7 @@ import java.util.TimeZone;
  * Created by rohithram on 23/6/17.
  */
 
-public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  {
+public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>   {
 
     Context context;
     List<Posts> Postlist;
@@ -91,19 +91,33 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org);
 
-        if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ){
+
+        if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
             Glide.with(context)
                     .load(Postlist.get(holder.getAdapterPosition()).img_url)
                     .error(null)
-                    .placeholder(R.drawable.loading_icon)
-                    .crossFade(500)
+                    .crossFade(1000)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.iv_content);}
+                    .into(holder.iv_content);
+            if (Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") && !Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("status")) {
+                Glide.with(context)
+                        .load("")
+                        .placeholder(R.drawable.ic_play_circle_outline_black_24dp)
+                        .error(null)
+                        .override(64,64)
+                        .into(holder.iv_videocover);
+            } else {
+                Glide.clear(holder.iv_videocover);
+                holder.iv_videocover.setImageDrawable(null);
+            }
+        }
         else {
                 // make sure Glide doesn't load anything into this view until told otherwise
                 Glide.clear(holder.iv_content);
                 holder.iv_content.setImageDrawable(null);
             }
+
+
 
 
         //imageLoader.displayImage(logo_url,holder.iv_org);
@@ -117,7 +131,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
 
        if( type!=null && type.equalsIgnoreCase(s)) {
-           holder.iv_content.setOnClickListener(new View.OnClickListener() {
+           holder.iv_videocover.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
 
@@ -174,8 +188,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         public TextView tv_post_des, tv_org;
         public CardView cv_post;
         public ImageView iv_content;
-        public ImageView iv_org;
+        public ImageView iv_org,iv_videocover;
         public LikeView fblike;
+        public FrameLayout fl_images;
         public TextView tv_likes,tv_time;
 
         public ViewHolder(View itemView) {
@@ -191,6 +206,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             fblike.setAuxiliaryViewPosition(LikeView.AuxiliaryViewPosition.INLINE);
             tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
             tv_time = (TextView)itemView.findViewById(R.id.tv_time);
+            iv_videocover=(ImageView)itemView.findViewById(R.id.iv_videocover);
+            fl_images = (FrameLayout)itemView.findViewById(R.id.fl_images);
 
         }
 
