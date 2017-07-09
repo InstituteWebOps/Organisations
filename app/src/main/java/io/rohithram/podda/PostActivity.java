@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -36,6 +41,8 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public ProgressBar progressBar;
     Context context;
     static FrameLayout layout_MainMenu;
+    PopupWindow reactions_popup;
+    CardView  containerLayout;
 
 
     @Override
@@ -46,11 +53,24 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
         layout_MainMenu.getForeground().setAlpha( 0);
 
+        containerLayout = (CardView) findViewById(R.id.cv_popup);
+
+        reactions_popup = new PopupWindow(PostActivity.this);
+
+        reactions_popup.setContentView(containerLayout);
+
+        //We need to get the instance of the LayoutInflater, use the context of this activity
+        LayoutInflater inflater = (LayoutInflater)PostActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //Inflate the view from a predefined XML layout
+        View layout = inflater.inflate(R.layout.react_popup,(ViewGroup)findViewById(R.id.cv_popup));
+
         String apptoken = getString(R.string.Apptoken);
         final String pageid;
         String appid = getString(R.string.facebook_app_id);
         String logo_url;
         String Pagename;
+        String reaction_url = getString(R.string.reaction_query);
 
         Intent i = getIntent();
         pageid = i.getStringExtra("pageid");
@@ -98,7 +118,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         postList = new ArrayList<>();
 
-        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd);
+        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd,reactions_popup,layout);
         rv_list.setAdapter(adapter);
 
         /* make the API call */
@@ -107,7 +127,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         GraphGetRequest request = new GraphGetRequest();
         try {
-            request.dorequest(key, pageid + "/posts", null,adapter, postList,pd);
+            request.dorequest(key, pageid + "/posts", null,adapter, postList,pd,reaction_url);
         } catch (Exception e) {
             e.printStackTrace();
         }

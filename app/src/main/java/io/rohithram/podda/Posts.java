@@ -11,10 +11,11 @@ public class Posts {
     String id;
     public  String img_url;
     public int count;
+    public int like_count,haha_count,sad_count,angry_count,love_count,wow_count;
     public String vid_url;
     public String type;
     public String created_time;
-
+    public Boolean isclicked = false;
     public Posts(String message,String id){
         this.message = message;
         this.id = id;

@@ -36,7 +36,9 @@ import java.util.concurrent.ExecutionException;
 
 public class GraphGetRequest  {
 
-    public Void dorequest(final AccessToken key, String url, Bundle params,final PostApapter adapter, final ArrayList<Posts> Postlist, final ProgressDialog pd)  {
+
+    public Void dorequest(final AccessToken key, String url, Bundle params, final PostApapter adapter, final ArrayList<Posts> Postlist, final ProgressDialog pd, final String reaction_url)  {
+
         final GraphRequest request = new GraphRequest(
                 key,
                 url,
@@ -54,7 +56,7 @@ public class GraphGetRequest  {
                                     final Posts post = new Posts(postjs.getString("message"), postjs.getString("id"));
                                     post.created_time = postjs.getString("created_time");
                                     new GraphRequest(key,
-                                            post.id + "/?fields=type,source,full_picture,attachments,reactions.summary(true){total_count}",
+                                            post.id + "/?fields="+reaction_url+",type,source,full_picture,attachments,reactions.summary(true){total_count}",
                                             null,
                                             HttpMethod.GET,
                                             new GraphRequest.Callback() {
@@ -85,9 +87,44 @@ public class GraphGetRequest  {
                                                                 }
                                                             }
                                                         }}*/
-                                                        JSONObject likesjson = jsonresponse2.getJSONObject("reactions");
-                                                        if (likesjson.has("summary")) {
-                                                            JSONObject likes = likesjson.getJSONObject("summary");
+                                                        JSONObject Likejson = jsonresponse2.getJSONObject("like");
+                                                        if(Likejson.has("summary")){
+                                                            JSONObject like = Likejson.getJSONObject("summary");
+                                                            post.like_count = like.getInt("total_count");
+                                                        }
+                                                        JSONObject hahajson = jsonresponse2.getJSONObject("haha");
+                                                        if(hahajson.has("summary")){
+                                                            JSONObject haha = hahajson.getJSONObject("summary");
+                                                            post.haha_count = haha.getInt("total_count");
+                                                        }
+
+                                                        JSONObject wowjson = jsonresponse2.getJSONObject("wow");
+                                                        if(wowjson.has("summary")){
+                                                            JSONObject wow = wowjson.getJSONObject("summary");
+                                                            post.wow_count = wow.getInt("total_count");
+                                                        }
+
+                                                        JSONObject angryjson = jsonresponse2.getJSONObject("angry");
+                                                        if(angryjson.has("summary")){
+                                                            JSONObject angry = angryjson.getJSONObject("summary");
+                                                            post.angry_count = angry.getInt("total_count");
+                                                        }
+
+                                                        JSONObject sadjson = jsonresponse2.getJSONObject("sad");
+                                                        if(sadjson.has("summary")){
+                                                            JSONObject sad = sadjson.getJSONObject("summary");
+                                                            post.sad_count = sad.getInt("total_count");
+                                                        }
+
+                                                        JSONObject lovejson = jsonresponse2.getJSONObject("love");
+                                                        if(lovejson.has("summary")){
+                                                            JSONObject love = lovejson.getJSONObject("summary");
+                                                            post.love_count = love.getInt("total_count");
+                                                        }
+
+                                                        JSONObject reactionsjson = jsonresponse2.getJSONObject("reactions");
+                                                        if (reactionsjson.has("summary")) {
+                                                            JSONObject likes = reactionsjson.getJSONObject("summary");
                                                             post.count = likes.getInt("total_count");
                                                         }
                                                     } catch (JSONException e) {
