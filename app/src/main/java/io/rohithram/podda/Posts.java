@@ -1,5 +1,6 @@
 package io.rohithram.podda;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ public class Posts {
     public String vid_url;
     public String type;
     public String created_time;
-
+    public ArrayList<String> sub_imgurls = new ArrayList<String>();
     public Posts(String id ) {
         this.id = id;
     }

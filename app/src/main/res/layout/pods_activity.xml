@@ -56,9 +56,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_post_des"
         android:foregroundGravity="center"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_post_des"
         android:id="@+id/fl_images"
         >
 
@@ -84,7 +83,67 @@
         android:clickable="true"
         android:layout_margin="8dp"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_gridimages3"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="280dp"
+                android:id="@+id/iv_image11"
+                android:layout_margin="8dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/border"
+                android:src="@drawable/laugh"
+                android:layout_alignParentStart="true"/>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="130dp"
+                android:id="@+id/iv_image12"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/border"
+                android:layout_toEndOf="@+id/iv_image11"
+                android:src="@drawable/love"/>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="130dp"
+                android:id="@+id/iv_image13"
+                android:visibility="visible"
+                android:background="@drawable/border"
+                android:layout_marginRight="4dp"
+                android:layout_alignBottom="@+id/iv_image11"
+                android:scaleType="fitXY"
+                android:layout_toEndOf="@+id/iv_image11"
+                android:layout_below="@+id/iv_image12"
+                android:src="@drawable/love"/>
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="130dp"
+                android:id="@+id/tv_nofimages"
+                android:gravity="center"
+                android:alpha="0.8"
+                android:textSize="70sp"
+                android:textColor="#eceff1"
+                android:shadowColor="#455a64"
+                android:shadowRadius="2"
+                android:layout_centerHorizontal="true"
+                android:text="7+"
+                android:layout_toEndOf="@+id/iv_image11"
+                android:layout_below="@+id/iv_image12"/>
+
+        </RelativeLayout>
+
     </FrameLayout>
+
+
+
 
     <View
         android:layout_width="match_parent"

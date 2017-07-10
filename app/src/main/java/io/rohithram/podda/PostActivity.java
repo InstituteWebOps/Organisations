@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -38,8 +39,9 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public PostApapter adapter;
     public ProgressBar progressBar;
     static FrameLayout layout_MainMenu;
-    PopupWindow reactions_popup;
+    PopupWindow reactions_popup,multipopup;
     CardView  containerLayout;
+    RelativeLayout containerLayout2;
 
 
     @Override
@@ -56,11 +58,23 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         reactions_popup.setContentView(containerLayout);
 
+        containerLayout2 = (RelativeLayout) findViewById(R.id.rl_multipopup);
+
+        multipopup = new PopupWindow(PostActivity.this);
+
+        multipopup.setContentView(containerLayout);
+
         //We need to get the instance of the LayoutInflater, use the context of this activity
         LayoutInflater inflater = (LayoutInflater)PostActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //Inflate the view from a predefined XML layout
         View layout = inflater.inflate(R.layout.react_popup,(ViewGroup)findViewById(R.id.cv_popup));
+
+        //We need to get the instance of the LayoutInflater, use the context of this activity
+        LayoutInflater inflater1 = (LayoutInflater)PostActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //Inflate the view from a predefined XML layout
+        View layout1 = inflater.inflate(R.layout.multimagepopup,(ViewGroup)findViewById(R.id.rl_multipopup));
 
         String apptoken = getString(R.string.Apptoken);
         final String pageid;
@@ -115,7 +129,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         postList = new ArrayList<>();
 
-        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd,reactions_popup,layout);
+        adapter = new PostApapter(PostActivity.this,postList, key, Pagename, logo_url, fragmentManager, fragment,layout_MainMenu,pd,reactions_popup,layout,multipopup,layout1);
         rv_list.setAdapter(adapter);
 
         /* make the API call */

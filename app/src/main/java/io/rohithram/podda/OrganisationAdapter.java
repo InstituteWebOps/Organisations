@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -25,12 +24,10 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
 
     List<OrganisationObject> OrgList;
     Context context;
-    com.nostra13.universalimageloader.core.ImageLoader imageLoader ;
 
     public OrganisationAdapter(Context context, List<OrganisationObject> OrgList) {
         this.context = context;
         this.OrgList = OrgList;
-        imageLoader = ImageUtil.getImageLoader(this.context);
 
     }
 

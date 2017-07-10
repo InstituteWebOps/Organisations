@@ -4,11 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.opengl.Visibility;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
@@ -26,17 +31,20 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.facebook.share.widget.LikeView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.stfalcon.multiimageview.MultiImageView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +53,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
+import static android.R.attr.homeLayout;
 import static android.R.attr.id;
 import static android.R.attr.layout_below;
 import static android.R.attr.targetActivity;
@@ -67,13 +77,12 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     VideoFragment fragment;
     FrameLayout mainlayout;
     ProgressDialog pd;
-    ImageLoader imageLoader ;
-    PopupWindow reactionpopup;
-    View layout;
+    PopupWindow reactionpopup,multipopup;
+    View layout,layout1;
 
 
 
-    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu, ProgressDialog pd, PopupWindow reactionpopup, View layout) {
+    public PostApapter(Context context, ArrayList<Posts> postList, AccessToken key, String pagename, String logo_url, FragmentManager fragmentManager, VideoFragment fragment, FrameLayout layout_MainMenu, ProgressDialog pd, PopupWindow reactions_popup, View view, PopupWindow multipopup, View layout1) {
         this.context = context;
         this.Postlist = postList;
         this.key = key;
@@ -83,9 +92,10 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.fragment = fragment;
         this.mainlayout = layout_MainMenu;
         this.pd = pd;
-        imageLoader = ImageUtil.getImageLoader(this.context);
-        this.reactionpopup = reactionpopup;
-        this.layout = layout;
+        this.reactionpopup = reactions_popup;
+        this.layout = view;
+        this.multipopup = multipopup;
+        this.layout1 = layout1;
 
 
 
@@ -123,12 +133,140 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
 
         if(Postlist.get(holder.getAdapterPosition()).type!=null && Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
-            Glide.with(context)
-                    .load(Postlist.get(holder.getAdapterPosition()).img_url)
-                    .error(null)
+
+            if(Postlist.get(holder.getAdapterPosition()).sub_imgurls!=null && Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==0){
+            Glide.with(context).
+                    load(Postlist.get(holder.getAdapterPosition()).img_url)
+                    .placeholder(R.drawable.loading_icon)
                     .crossFade(1000)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.iv_content);
+            }
+
+            if(Postlist.get(holder.getAdapterPosition()).sub_imgurls!=null && Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()!=0) {
+
+                if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size() >= 2){
+
+                    holder.iv_content.setVisibility(View.INVISIBLE);
+                    holder.iv_content.getLayoutParams().height = 0;
+                    holder.iv_content.getLayoutParams().width = 0;
+
+                    Glide.with(context).
+                                load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(0))
+                                .placeholder(R.drawable.loading_icon)
+                                .crossFade(1000)
+                                .into(holder.iv_imag11);
+                    Glide.with(context).
+                            load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(1))
+                            .placeholder(R.drawable.loading_icon)
+                            .crossFade(1000)
+                            .into(holder.iv_image12);
+                    if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==2) {
+                        holder.iv_image13.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        Glide.with(context).
+                                load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(2))
+                                .placeholder(R.drawable.loading_icon)
+                                .crossFade(1000)
+                                .into(holder.iv_image13);
+                    }
+
+                    holder.tv_nofimages.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-3)+"+");
+
+                    holder.rv_gridimages.setVisibility(View.VISIBLE);
+                    }
+
+                    holder.rv_gridimages.setOnClickListener(new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                        @Override
+                        public void onClick(final View v) {
+
+                            try{
+
+                                final int[] p = {0};
+                                multipopup = new PopupWindow(layout1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT,true);
+
+                                final ImageView iv_popupimage;
+                                ImageButton ibt_close,ibt_fwd,ibt_back;
+
+                                iv_popupimage = (ImageView)layout1.findViewById(R.id.iv_popupimage);
+
+                                ibt_close = (ImageButton)layout1.findViewById(R.id.ibt_close);
+                                ibt_fwd = (ImageButton)layout1.findViewById(R.id.ibt_forward);                                ibt_close = (ImageButton)layout1.findViewById(R.id.ibt_close);
+                                ibt_back = (ImageButton)layout1.findViewById(R.id.ibt_backward);
+
+                                Glide.with(context).
+                                        load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]))
+                                        .placeholder(R.drawable.loading_icon)
+                                        .crossFade(1000)
+                                        .into(iv_popupimage);
+
+                                multipopup.setTouchable(true);
+                                multipopup.setFocusable(true);
+                                multipopup.setElevation(32);
+                                multipopup.setBackgroundDrawable(new ColorDrawable(
+                                        android.graphics.Color.TRANSPARENT));
+                                multipopup.setOutsideTouchable(false);
+
+
+
+                            new Handler().postDelayed(new Runnable(){
+                                public void run() {
+                                    multipopup.showAtLocation(v,Gravity.NO_GRAVITY,0,0);
+                                    PostActivity.dim();
+                                }
+
+                            }, 200L);
+
+
+                                ibt_back.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(p[0]!=0){
+                                        p[0] = p[0]-1;
+                                        setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
+                                    }
+                                    }
+                                });
+
+
+                                ibt_fwd.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                        p[0] = p[0] +1;
+                                        setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
+                                    }
+                                });
+
+                                ibt_close.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        multipopup.dismiss();
+                                        PostActivity.normal();
+
+                                    }
+                                });
+
+                                multipopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss() {
+                                        PostActivity.normal();
+                                    }
+                                });
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        }
+                    });
+
+
+
+
+            }
 
             if (Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") && !Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("status")) {
                 Glide.with(context)
@@ -137,6 +275,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                         .error(null)
                         .override(64,64)
                         .into(holder.iv_videocover);
+
+
             } else {
                 Glide.clear(holder.iv_videocover);
                 holder.iv_videocover.setImageDrawable(null);
@@ -167,6 +307,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
             }
         });
+
+
 
         if(Postlist.get(holder.getAdapterPosition()).message!=null){
         holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);}
@@ -272,6 +414,15 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
            }
     }
 
+    private Void  setImage(ImageView image,String url){
+        Glide.with(context).
+                load(url)
+                .placeholder(R.drawable.loading_icon)
+                .crossFade(1000)
+                .into(image);
+        return null;
+    }
+
     private Void hideview(View view,int count){
         if(count==0){
 
@@ -357,10 +508,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         public ImageView iv_org,iv_videocover,iv_1,iv_2,iv_3,iv_4,iv_5,iv_6;
         public LikeView fblike;
         public FrameLayout fl_images;
-        public TextView tv_likes,tv_time;
+        public TextView tv_likes,tv_time,tv_nofimages;
         public LinearLayout lin_emojis;
-        ImageView iv_11,iv_21,iv_31,iv_41,iv_51,iv_61;
+        ImageView iv_11,iv_21,iv_31,iv_41,iv_51,iv_61,iv_imag11,iv_image12,iv_image13;
         TextView tv_likecount,tv_hahacount,tv_lovecount,tv_wowcount,tv_angrycount,tv_sadcount;
+        RelativeLayout rv_gridimages;
 
 
 
@@ -382,6 +534,14 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             iv_videocover=(ImageView)itemView.findViewById(R.id.iv_videocover);
             fl_images = (FrameLayout)itemView.findViewById(R.id.fl_images);
             lin_emojis = (LinearLayout)itemView.findViewById(R.id.lin_emojis);
+
+            rv_gridimages = (RelativeLayout)itemView.findViewById(R.id.rv_gridimages3);
+            tv_nofimages = (TextView)itemView.findViewById(R.id.tv_nofimages);
+            iv_imag11 = (ImageView)itemView.findViewById(R.id.iv_image11);
+            iv_image12 = (ImageView)itemView.findViewById(R.id.iv_image12);
+            iv_image13 = (ImageView)itemView.findViewById(R.id.iv_image13);
+
+
 
             iv_1 = (ImageView)itemView.findViewById(R.id.iv_1);
             iv_2 = (ImageView)itemView.findViewById(R.id.iv_2);

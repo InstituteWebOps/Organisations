@@ -79,21 +79,28 @@ public class GraphGetRequest  {
                                                                 post.vid_url = jsonresponse2.getString("source");
                                                             }
                                                         }
-                                                        /*if(jsonresponse2.has("attachments")){
+                                                        if(jsonresponse2.has("attachments")){
                                                         JSONObject attachments = jsonresponse2.getJSONObject("attachments");
                                                         JSONArray attach_data = attachments.getJSONArray("data");
-                                                        if (attach_data.length() > 0) {
-                                                            JSONObject attach_dataJSONObject = attach_data.getJSONObject(0);
-                                                            if (attach_dataJSONObject.has("media")) {
-                                                                JSONObject mediajson = attach_dataJSONObject.getJSONObject("media");
-                                                                if (mediajson.has("image")) {
-                                                                    JSONObject imagejson = mediajson.getJSONObject("image");
-                                                                    post.img_url = imagejson.getString("src");
-                                                                    Log.i("Tsfff",String.valueOf(post.img_url));
+                                                        if (attach_data.length() >= 0) {
+                                                            JSONObject attachmentsjson = attach_data.getJSONObject(0);
+                                                            if (attachmentsjson.has("subattachments")) {
+                                                                JSONObject subattachments = attachmentsjson.getJSONObject("subattachments");
+                                                                if (subattachments.has("data")) {
+                                                                    JSONArray subdata = subattachments.getJSONArray("data");
+                                                                    for (int k = 0; k < subdata.length(); k++) {
+                                                                        JSONObject jsoni = subdata.getJSONObject(k);
+                                                                        if (jsoni.has("media")) {
+                                                                            JSONObject mediajson = jsoni.getJSONObject("media");
+                                                                            JSONObject imagejson = mediajson.getJSONObject("image");
+                                                                            post.sub_imgurls.add(imagejson.getString("src"));
+                                                                        }
 
+                                                                    }
                                                                 }
                                                             }
-                                                        }}*/
+                                                        }
+                                                        }
                                                         JSONObject Likejson = jsonresponse2.getJSONObject("like");
                                                         if (Likejson.has("summary")) {
                                                             JSONObject like = Likejson.getJSONObject("summary");
