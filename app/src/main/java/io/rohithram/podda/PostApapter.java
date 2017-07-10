@@ -122,7 +122,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 .into(holder.iv_org);
 
 
-        if(Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
+        if(Postlist.get(holder.getAdapterPosition()).type!=null && Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
             Glide.with(context)
                     .load(Postlist.get(holder.getAdapterPosition()).img_url)
                     .error(null)
@@ -148,7 +148,33 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 holder.iv_content.setImageDrawable(null);
             }
 
-        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);
+        holder.iv_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder imagezoom = new AlertDialog.Builder(context);
+                LayoutInflater layout = LayoutInflater.from(context);
+                final View view = layout.inflate(R.layout.imagezoom, null);
+                ImageView image = (ImageView)view.findViewById(R.id.iv_imagezoom);
+
+                Glide.with(context)
+                        .load(Postlist.get(holder.getAdapterPosition()).img_url)
+                        .placeholder(R.drawable.loading_icon)
+                        .error(null)
+                        .crossFade(1000)
+                        .into(image);
+                imagezoom.setView(view);
+                imagezoom.show();
+
+            }
+        });
+
+        if(Postlist.get(holder.getAdapterPosition()).message!=null){
+        holder.tv_post_des.setText(Postlist.get(holder.getAdapterPosition()).message);}
+        else {
+            holder.tv_post_des.setVisibility(View.INVISIBLE);
+            holder.tv_post_des.getLayoutParams().width = 0;
+            holder.tv_post_des.getLayoutParams().height = 0;
+        }
 
 
         String udata=String.valueOf("Reactions: "+Postlist.get(holder.getAdapterPosition()).count);
@@ -199,7 +225,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                     new Handler().postDelayed(new Runnable(){
                             public void run() {
-                                reactionpopup.showAsDropDown(v,-20,0);
+                                reactionpopup.showAsDropDown(v,-20,-250);
                                 PostActivity.dim();
                             }
 

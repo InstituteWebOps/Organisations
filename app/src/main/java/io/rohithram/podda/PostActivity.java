@@ -19,9 +19,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenSource;
 import com.facebook.FacebookSdk;
@@ -39,7 +37,6 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public RecyclerView rv_list;
     public PostApapter adapter;
     public ProgressBar progressBar;
-    Context context;
     static FrameLayout layout_MainMenu;
     PopupWindow reactions_popup;
     CardView  containerLayout;
