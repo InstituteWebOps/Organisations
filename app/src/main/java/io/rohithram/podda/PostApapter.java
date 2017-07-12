@@ -46,6 +46,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.share.widget.LikeView;
 import com.stfalcon.multiimageview.MultiImageView;
 
@@ -135,6 +138,31 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 .crossFade(500)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org);
+
+        holder.fblike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                holder.fblike.setObjectIdAndType(
+                        Postlist.get(holder.getAdapterPosition()).id,
+                        LikeView.ObjectType.OPEN_GRAPH);
+                Log.i("XDEf","successfully liked");
+
+
+                new GraphRequest(
+                        key,
+                        "/"+Postlist.get(holder.getAdapterPosition()).id+"/likes",
+                        null,
+                        HttpMethod.POST,
+                        new GraphRequest.Callback() {
+                            public void onCompleted(GraphResponse response) {
+                                Log.i("SUCCEESS","successfully liked");
+                            }
+                        }
+                ).executeAsync();
+
+            }
+        });
 
 
         if(Postlist.get(holder.getAdapterPosition()).type!=null && Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
@@ -233,8 +261,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                                     Glide.with(context).
                                             load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]))
-                                            .placeholder(R.drawable.loading)
-                                            .crossFade(1000)
+                                            .placeholder(R.color.Imageback)
+                                            .crossFade(500)
                                             .into(iv_popupimage);
 
                                     multipopup.setTouchable(true);
@@ -247,7 +275,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                                     new Handler().postDelayed(new Runnable(){
                                         public void run() {
-                                            multipopup.showAtLocation(v,Gravity.BOTTOM,0,0);
+                                            multipopup.showAtLocation(v,Gravity.CENTER,0,0);
                                             PostActivity.dim();
                                         }
 
@@ -257,14 +285,16 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                     ibt_back.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if(p[0]!=0){
-                                                p[0] = p[0]-1;
-                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
-                                            }
+
                                             if(p[0]==0){
                                                 Toast.makeText(context, "Move Forward!", Toast.LENGTH_SHORT).show();
 
                                             }
+                                            if(p[0]!=0){
+                                                p[0] = p[0]-1;
+                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
+                                            }
+
                                         }
                                     });
 
@@ -272,13 +302,14 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                     ibt_fwd.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
-                                                p[0] = p[0] +1;
-                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
                                             if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
                                                 Toast.makeText(context, "That's All Buddy!", Toast.LENGTH_SHORT).show();
 
                                             }
+                                            if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                                p[0] = p[0] +1;
+                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
+
                                         }
                                     });
 
@@ -329,8 +360,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                                 Glide.with(context).
                                         load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]))
-                                        .placeholder(R.drawable.loading)
-                                        .crossFade(1000)
+                                        .placeholder(R.color.Imageback)
+                                        .crossFade(500)
                                         .into(iv_popupimage);
 
                                 multipopup.setTouchable(true);
@@ -344,7 +375,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                             new Handler().postDelayed(new Runnable(){
                                 public void run() {
-                                    multipopup.showAtLocation(v,Gravity.BOTTOM,0,0);
+                                    multipopup.showAtLocation(v,Gravity.CENTER,0,0);
                                     PostActivity.dim();
                                 }
 
@@ -354,14 +385,16 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                 ibt_back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        if(p[0]!=0){
-                                        p[0] = p[0]-1;
-                                        setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
-                                    }
+
                                         if(p[0]==0){
                                             Toast.makeText(context, "Move Forward!", Toast.LENGTH_SHORT).show();
 
                                         }
+                                        if(p[0]!=0){
+                                        p[0] = p[0]-1;
+                                        setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
+                                    }
+
                                     }
                                 });
 
@@ -369,13 +402,18 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                 ibt_fwd.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
-                                        p[0] = p[0] +1;
-                                        setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
-                                        if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
-                                            Toast.makeText(context, "That's All Buddy", Toast.LENGTH_SHORT).show();
 
+                                        if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1 ){
+                                            Toast.makeText(context, "That's All Buddy", Toast.LENGTH_SHORT).show();
                                         }
+                                        if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                            p[0] = p[0] +1;
+                                            if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-2){
+
+                                            }
+                                            setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
+                                        }
+
                                     }
                                 });
 
@@ -562,8 +600,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     private Void  setImage(ImageView image,String url){
         Glide.with(context).
                 load(url)
-                .placeholder(R.drawable.loading)
-                .crossFade(1000)
+                .placeholder(R.color.Imageback)
+                .fitCenter()
+                .crossFade(500)
                 .into(image);
         return null;
     }
@@ -672,8 +711,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             iv_org = (ImageView) itemView.findViewById(R.id.iv_org_profilepic);
             iv_content = (ImageView) itemView.findViewById(R.id.iv_content);
             fblike = (LikeView) itemView.findViewById(R.id.fb_like);
-            fblike.setLikeViewStyle(LikeView.Style.STANDARD);
-            fblike.setAuxiliaryViewPosition(LikeView.AuxiliaryViewPosition.INLINE);
+
+
             tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
             tv_time = (TextView)itemView.findViewById(R.id.tv_time);
             iv_videocover=(ImageView)itemView.findViewById(R.id.iv_videocover);

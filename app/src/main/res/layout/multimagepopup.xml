@@ -53,9 +53,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="354dp"
+        android:layout_height="wrap_content"
         android:id="@+id/iv_popupimage"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="2dp"
