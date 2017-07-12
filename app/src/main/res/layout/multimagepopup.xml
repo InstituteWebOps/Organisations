@@ -5,18 +5,9 @@
     android:layout_margin="16dp"
     android:clickable="true"
     android:background="#80000000"
-
     android:id="@+id/rl_multipopup">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ibt_close"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="16dp"
-        android:background="#263238"
-        android:src="@drawable/ic_close_black_24dp" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -48,9 +39,6 @@
 
     </RelativeLayout>
 
-
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,9 +52,15 @@
         android:layout_below="@+id/lin_popup"
         android:background="@drawable/image_border"
         android:src="@drawable/laugh"/>
-
-
-
-
+    <ImageButton
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:id="@+id/ibt_close"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_alignRight="@id/lin_popup"
+        android:layout_marginRight="16dp"
+        android:background="#263238"
+        android:src="@drawable/ic_close_black_24dp" />
 
 </RelativeLayout>

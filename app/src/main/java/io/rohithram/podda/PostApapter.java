@@ -471,7 +471,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         holder.iv_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder imagezoom = new AlertDialog.Builder(context);
+                AlertDialog.Builder imagezoom = new AlertDialog.Builder(context,R.style.custom_alert_dialog);
                 LayoutInflater layout = LayoutInflater.from(context);
                 final View view = layout.inflate(R.layout.imagezoom, null);
                 ImageView image = (ImageView)view.findViewById(R.id.iv_imagezoom);
