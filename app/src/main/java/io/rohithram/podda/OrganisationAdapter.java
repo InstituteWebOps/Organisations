@@ -52,10 +52,9 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
 
         Glide.with(context)
                 .load(OrgList.get(holder.getAdapterPosition()).logo_url)
-                .placeholder(R.drawable.loading_icon)
-                .crossFade(500)
+                .placeholder(R.drawable.loading)
                 .error(null)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.iv_org_logo);
        //imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
 
@@ -75,6 +74,18 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
         });
 
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     @Override
     public int getItemCount() {

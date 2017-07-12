@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,10 +38,15 @@ public class VideoFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
 
+
+
     VideoView vid_post;
     ProgressBar progress_bar;
-    ImageButton bt_dismiss,bt_expand;
-    ImageView iv_play;
+    ImageButton bt_dismiss;
+    ImageView image;
+    View viewpost;
+
+    View view;
 
     // TODO: Rename and change types of parameters
     private String video_url;
@@ -83,13 +90,21 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_video, container, false);
+        view = inflater.inflate(R.layout.fragment_video, container, false);
+
+        //getDialog().setCanceledOnTouchOutside(true);
+
+        viewpost = getActivity().findViewById(R.id.cv_post);
+        image = (ImageView) viewpost.findViewById(R.id.iv_content);
+        image.setClickable(false);
+
+
+
 
 
         vid_post = (VideoView)view.findViewById(R.id.vid_post);
         progress_bar = (ProgressBar)view.findViewById(R.id.progressbar);
         bt_dismiss = (ImageButton)view.findViewById(R.id.bt_dismiss);
-        bt_expand = (ImageButton)view.findViewById(R.id.bt_expand);
 
         Uri uri = Uri.parse(video_url);
 
@@ -138,20 +153,7 @@ public class VideoFragment extends Fragment {
             }
         });
 
-        bt_expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PostActivity.normal();
-                DisplayMetrics metrics = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) vid_post.getLayoutParams();
-                params.width =  metrics.widthPixels;
-                params.height = metrics.heightPixels;
-                params.leftMargin = 0;
-                vid_post.setLayoutParams(params);
 
-            }
-        });
 
 
         return view;
@@ -170,6 +172,9 @@ public class VideoFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+
+
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -180,8 +185,9 @@ public class VideoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         PostActivity.normal();
-
+        image.setClickable(true);
         mListener = null;
+
     }
 
     /**

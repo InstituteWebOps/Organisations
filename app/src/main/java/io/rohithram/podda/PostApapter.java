@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,6 +41,7 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -106,7 +109,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.pods_activity, parent, false);
+
         return new ViewHolder(itemView,layout);
+
     }
 
     @Override
@@ -125,7 +130,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
         Glide.with(context)
                 .load(logo_url)
-                .placeholder(R.drawable.loading_icon)
+                .placeholder(R.drawable.loading)
                 .error(null)
                 .crossFade(500)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -137,10 +142,10 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             if(Postlist.get(holder.getAdapterPosition()).sub_imgurls!=null && Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==0){
             Glide.with(context).
                     load(Postlist.get(holder.getAdapterPosition()).img_url)
-                    .placeholder(R.drawable.loading_icon)
-                    .crossFade(1000)
+                    .placeholder(R.color.Imageback)
+                    .crossFade(500)
                     .into(holder.iv_content);
-            }
+                            }
 
             if(Postlist.get(holder.getAdapterPosition()).sub_imgurls!=null && Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()!=0) {
 
@@ -150,31 +155,158 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                     holder.iv_content.getLayoutParams().height = 0;
                     holder.iv_content.getLayoutParams().width = 0;
 
+                    if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()>=3){
+
                     Glide.with(context).
                                 load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(0))
-                                .placeholder(R.drawable.loading_icon)
+                                .placeholder(R.drawable.loading)
                                 .crossFade(1000)
+                                .centerCrop()
                                 .into(holder.iv_imag11);
                     Glide.with(context).
                             load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(1))
-                            .placeholder(R.drawable.loading_icon)
+                            .placeholder(R.drawable.loading)
                             .crossFade(1000)
                             .into(holder.iv_image12);
+
+                    Glide.with(context).
+                            load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(2))
+                            .placeholder(R.drawable.loading)
+                            .crossFade(1000)
+                            .into(holder.iv_image13);
+
+                        holder.rv_gridimages.setVisibility(View.VISIBLE);
+
+                    }
+
                     if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==2) {
-                        holder.iv_image13.setVisibility(View.INVISIBLE);
-                    }
-                    else{
+
                         Glide.with(context).
-                                load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(2))
-                                .placeholder(R.drawable.loading_icon)
-                                .crossFade(1000)
-                                .into(holder.iv_image13);
+                                load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(0))
+                                .placeholder(R.drawable.loading)
+                                .crossFade(500)
+                                .centerCrop()
+                                .into(holder.iv_image21);
+                        Glide.with(context).
+                                load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(1))
+                                .placeholder(R.drawable.loading)
+                                .crossFade(500)
+                                .centerCrop()
+                                .into(holder.iv_image22);
+
+                        holder.rv_gridimages2.setVisibility(View.VISIBLE);
+
+
                     }
 
-                    holder.tv_nofimages.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-3)+"+");
+                    if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==3){
+                        holder.tv_nofimages.setVisibility(View.INVISIBLE);
 
-                    holder.rv_gridimages.setVisibility(View.VISIBLE);
                     }
+                    else if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()==2){
+                        holder.tv_nofimages.setVisibility(View.INVISIBLE);
+                        holder.iv_image12.getLayoutParams().height = 280;
+
+                    }
+                    else if(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()>3) {
+
+                        holder.tv_nofimages.setText(String.valueOf(Postlist.get(holder.getAdapterPosition()).sub_imgurls.size() - 3) + "+");
+                    }
+
+                    }
+                    holder.rv_gridimages2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View v) {
+                            try{
+
+                                    final int[] p = {0};
+                                    multipopup = new PopupWindow(layout1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT,true);
+
+                                    final ImageView iv_popupimage;
+                                    ImageButton ibt_close,ibt_fwd,ibt_back;
+
+                                    iv_popupimage = (ImageView)layout1.findViewById(R.id.iv_popupimage);
+
+                                    ibt_close = (ImageButton)layout1.findViewById(R.id.ibt_close);
+                                    ibt_fwd = (ImageButton)layout1.findViewById(R.id.ibt_forward);
+                                    ibt_back = (ImageButton)layout1.findViewById(R.id.ibt_backward);
+
+                                    Glide.with(context).
+                                            load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]))
+                                            .placeholder(R.drawable.loading)
+                                            .crossFade(1000)
+                                            .into(iv_popupimage);
+
+                                    multipopup.setTouchable(true);
+                                    multipopup.setFocusable(true);
+                                    multipopup.setBackgroundDrawable(new ColorDrawable(
+                                            android.graphics.Color.TRANSPARENT));
+                                    multipopup.setOutsideTouchable(false);
+
+
+
+                                    new Handler().postDelayed(new Runnable(){
+                                        public void run() {
+                                            multipopup.showAtLocation(v,Gravity.BOTTOM,0,0);
+                                            PostActivity.dim();
+                                        }
+
+                                    }, 200L);
+
+
+                                    ibt_back.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(p[0]!=0){
+                                                p[0] = p[0]-1;
+                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
+                                            }
+                                            if(p[0]==0){
+                                                Toast.makeText(context, "Move Forward!", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    });
+
+
+                                    ibt_fwd.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                                p[0] = p[0] +1;
+                                                setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
+                                            if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                                Toast.makeText(context, "That's All Buddy!", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    });
+
+                                    ibt_close.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            multipopup.dismiss();
+                                            PostActivity.normal();
+
+                                        }
+                                    });
+
+                                    multipopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss() {
+                                            PostActivity.normal();
+                                        }
+                                    });
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        });
+
+
 
                     holder.rv_gridimages.setOnClickListener(new View.OnClickListener() {
                         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -191,13 +323,13 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                                 iv_popupimage = (ImageView)layout1.findViewById(R.id.iv_popupimage);
 
+                                ibt_fwd = (ImageButton)layout1.findViewById(R.id.ibt_forward);
                                 ibt_close = (ImageButton)layout1.findViewById(R.id.ibt_close);
-                                ibt_fwd = (ImageButton)layout1.findViewById(R.id.ibt_forward);                                ibt_close = (ImageButton)layout1.findViewById(R.id.ibt_close);
                                 ibt_back = (ImageButton)layout1.findViewById(R.id.ibt_backward);
 
                                 Glide.with(context).
                                         load(Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]))
-                                        .placeholder(R.drawable.loading_icon)
+                                        .placeholder(R.drawable.loading)
                                         .crossFade(1000)
                                         .into(iv_popupimage);
 
@@ -212,7 +344,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                             new Handler().postDelayed(new Runnable(){
                                 public void run() {
-                                    multipopup.showAtLocation(v,Gravity.NO_GRAVITY,0,0);
+                                    multipopup.showAtLocation(v,Gravity.BOTTOM,0,0);
                                     PostActivity.dim();
                                 }
 
@@ -226,6 +358,10 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                         p[0] = p[0]-1;
                                         setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));
                                     }
+                                        if(p[0]==0){
+                                            Toast.makeText(context, "Move Forward!", Toast.LENGTH_SHORT).show();
+
+                                        }
                                     }
                                 });
 
@@ -236,6 +372,10 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                         if(p[0]!=Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
                                         p[0] = p[0] +1;
                                         setImage(iv_popupimage,Postlist.get(holder.getAdapterPosition()).sub_imgurls.get(p[0]));}
+                                        if(p[0]==Postlist.get(holder.getAdapterPosition()).sub_imgurls.size()-1){
+                                            Toast.makeText(context, "That's All Buddy", Toast.LENGTH_SHORT).show();
+
+                                        }
                                     }
                                 });
 
@@ -286,6 +426,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 // make sure Glide doesn't load anything into this view until told otherwise
                 Glide.clear(holder.iv_content);
                 holder.iv_content.setImageDrawable(null);
+                holder.iv_content.getLayoutParams().height=0;
+                holder.iv_content.getLayoutParams().width = 0;
             }
 
         holder.iv_content.setOnClickListener(new View.OnClickListener() {
@@ -298,7 +440,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                 Glide.with(context)
                         .load(Postlist.get(holder.getAdapterPosition()).img_url)
-                        .placeholder(R.drawable.loading_icon)
+                        .placeholder(R.color.Imageback)
                         .error(null)
                         .crossFade(1000)
                         .into(image);
@@ -392,6 +534,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                    @Override
                    public void onClick(View v) {
 
+                       holder.iv_content.setClickable(false);
+
                        String type1 = Postlist.get(holder.getAdapterPosition()).type;
                        if(type1!=null && type1.equalsIgnoreCase(s)) {
                            if (!Postlist.get(holder.getAdapterPosition()).vid_url.toLowerCase().contains(s1.toLowerCase())) {
@@ -414,10 +558,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
            }
     }
 
+
     private Void  setImage(ImageView image,String url){
         Glide.with(context).
                 load(url)
-                .placeholder(R.drawable.loading_icon)
+                .placeholder(R.drawable.loading)
                 .crossFade(1000)
                 .into(image);
         return null;
@@ -510,9 +655,9 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         public FrameLayout fl_images;
         public TextView tv_likes,tv_time,tv_nofimages;
         public LinearLayout lin_emojis;
-        ImageView iv_11,iv_21,iv_31,iv_41,iv_51,iv_61,iv_imag11,iv_image12,iv_image13;
+        ImageView iv_11,iv_21,iv_31,iv_41,iv_51,iv_61,iv_imag11,iv_image12,iv_image13,iv_image21,iv_image22;
         TextView tv_likecount,tv_hahacount,tv_lovecount,tv_wowcount,tv_angrycount,tv_sadcount;
-        RelativeLayout rv_gridimages;
+        RelativeLayout rv_gridimages,rv_gridimages2;
 
 
 
@@ -536,10 +681,13 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             lin_emojis = (LinearLayout)itemView.findViewById(R.id.lin_emojis);
 
             rv_gridimages = (RelativeLayout)itemView.findViewById(R.id.rv_gridimages3);
+            rv_gridimages2 = (RelativeLayout)itemView.findViewById(R.id.rv_gridimages2);
             tv_nofimages = (TextView)itemView.findViewById(R.id.tv_nofimages);
             iv_imag11 = (ImageView)itemView.findViewById(R.id.iv_image11);
             iv_image12 = (ImageView)itemView.findViewById(R.id.iv_image12);
             iv_image13 = (ImageView)itemView.findViewById(R.id.iv_image13);
+            iv_image21 = (ImageView)itemView.findViewById(R.id.iv_image21);
+            iv_image22 = (ImageView)itemView.findViewById(R.id.iv_image22);
 
 
 

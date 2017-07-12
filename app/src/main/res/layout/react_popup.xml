@@ -16,8 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:clickable="true"
             android:id="@+id/lin_emojis2">
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -48,6 +49,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     protected void onCreate(Bundle onRetainNonConfigurationChanges) {
         super.onCreate(onRetainNonConfigurationChanges);
         setContentView(R.layout.posts_activity);
+
 
         layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
         layout_MainMenu.getForeground().setAlpha( 0);
@@ -110,6 +112,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
             // Create a new Fragment to be placed in the activity layout
             fragment = new VideoFragment();
             fragment.setArguments(arg);
+
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             // Add the fragment to the 'fragment_container' FrameLayout
