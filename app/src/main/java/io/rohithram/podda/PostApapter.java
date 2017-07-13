@@ -85,6 +85,8 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
     ProgressDialog pd;
     PopupWindow reactionpopup,multipopup;
     View layout,layout1;
+    final PostActivity obj = new PostActivity();
+
 
 
 
@@ -102,6 +104,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.layout = view;
         this.multipopup = multipopup;
         this.layout1 = layout1;
+        Log.i("FREdwsdw",String.valueOf(Postlist.size()));
 
 
 
@@ -276,7 +279,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                     new Handler().postDelayed(new Runnable(){
                                         public void run() {
                                             multipopup.showAtLocation(v,Gravity.CENTER,0,0);
-                                            PostActivity.dim();
+                                            obj.dim();
                                         }
 
                                     }, 200L);
@@ -317,7 +320,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                         @Override
                                         public void onClick(View v) {
                                             multipopup.dismiss();
-                                            PostActivity.normal();
+                                            obj.normal();
 
                                         }
                                     });
@@ -325,7 +328,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                     multipopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                                         @Override
                                         public void onDismiss() {
-                                            PostActivity.normal();
+                                            obj.normal();
                                         }
                                     });
 
@@ -376,7 +379,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                             new Handler().postDelayed(new Runnable(){
                                 public void run() {
                                     multipopup.showAtLocation(v,Gravity.CENTER,0,0);
-                                    PostActivity.dim();
+                                    obj.dim();
                                 }
 
                             }, 200L);
@@ -420,8 +423,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                 ibt_close.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        multipopup.dismiss();
-                                        PostActivity.normal();
+                                        multipopup.dismiss();obj.normal();
 
                                     }
                                 });
@@ -429,7 +431,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                 multipopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                                     @Override
                                     public void onDismiss() {
-                                        PostActivity.normal();
+                                        obj.normal();
                                     }
                                 });
 
@@ -544,11 +546,11 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                     reactionpopup.setFocusable(true);
                     reactionpopup.setBackgroundDrawable(new BitmapDrawable());
                     reactionpopup.setOutsideTouchable(true);
-
                     new Handler().postDelayed(new Runnable(){
                             public void run() {
                                 reactionpopup.showAsDropDown(v,-20,-250);
-                                PostActivity.dim();
+
+                                obj.dim();
                             }
 
                         }, 200L);
@@ -556,7 +558,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                     reactionpopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
                         @Override
                         public void onDismiss() {
-                            PostActivity.normal();
+                            obj.normal();
                         }
                     });
 

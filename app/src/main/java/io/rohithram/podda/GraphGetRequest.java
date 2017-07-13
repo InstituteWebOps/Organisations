@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.WorkerThread;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,8 +38,11 @@ import java.util.concurrent.ExecutionException;
 
 public class GraphGetRequest  {
 
+    Fbfragment fbfragment = new Fbfragment();
+    PostActivity obj = new PostActivity();
 
-    public Void dorequest(final AccessToken key, String url, Bundle params, final PostApapter adapter, final ArrayList<Posts> Postlist, final ProgressDialog pd, final String reaction_url)  {
+
+    public Void dorequest(final AccessToken key, String url, Bundle params, final ArrayList<Posts> Postlist, final ProgressDialog pd, final String reaction_url, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout)  {
 
         final GraphRequest request = new GraphRequest(
                 key,
@@ -146,20 +151,36 @@ public class GraphGetRequest  {
                                                     } finally {
                                                         pd.dismiss();
                                                         Postlist.add(post);
-                                                        adapter.notifyDataSetChanged();
+                                                        if (isYoutube) {
+                                                            obj.setupViewPager(viewPager,Postlist);
+                                                            if (tabLayout != null) {
+                                                                tabLayout.setupWithViewPager(viewPager);
+                                                                tabLayout.setVisibility(View.VISIBLE);
+                                                            } else {
+                                                                obj.setupViewPagerNoYoutube(viewPager,Postlist);
+                                                                if (tabLayout != null) {
+                                                                    tabLayout.setupWithViewPager(viewPager);
+                                                                    tabLayout.setVisibility(View.VISIBLE);
+                                                                }
+                                                            }
+                                                        }
+                                                        //fbfragment.setResponse(Postlist);
+                                                        //fbfragment.adapter.notifyDataSetChanged();
                                                     }
                                                 }
                                             }).executeAsync();
 
                                 }
                             }
+
                         }catch (JSONException e) {
                                 e.printStackTrace();
+                        }finally {
                         }
                     }
                 });
         request.executeAsync();
-    return null;
+        return null;
     }
 
 }

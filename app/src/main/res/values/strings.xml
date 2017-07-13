@@ -28,4 +28,23 @@
     <item>"saathi.iitm/"</item>
     <item>"eml.iitm/"</item>
     <item>"conceptmathsolutions/"</item></string-array>
+
+    <string-array name="organisations">
+        <item>IIT Madras</item>
+        <item>Media Club IITM</item>
+        <item>iitmtv</item>
+        <item>emliitm</item>
+        <item>Saarang IITM</item>
+        <item>Shaastra IITM</item>
+    </string-array>
+
+    <string-array name="indexOfYoutubeOrg">
+        <item>"0|mediaclubiitm"</item>
+        <item>"4|ReachIITM"</item>
+        <item>"5|iitmsaarang"</item>
+        <item>"10|iitmshaastra"</item>
+        <item>"11|iitmtv"</item>
+        <item>15|emliitm"</item>
+    </string-array>
+
 </resources>

@@ -39,7 +39,7 @@ public class VideoFragment extends Fragment {
 
 
 
-
+    PostActivity obj = new PostActivity();
     VideoView vid_post;
     ProgressBar progress_bar;
     ImageButton bt_dismiss;
@@ -121,7 +121,7 @@ public class VideoFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onPrepared(MediaPlayer mp) {
-                PostActivity.dim();
+                obj.dim();
                 mp.start();
                 mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                     @Override
@@ -139,7 +139,7 @@ public class VideoFragment extends Fragment {
         vid_post.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                PostActivity.normal();
+                obj.normal();
                 Toast.makeText(getActivity(), "Video completed", Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
             }
@@ -148,7 +148,7 @@ public class VideoFragment extends Fragment {
         bt_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostActivity.normal();
+                obj.normal();
                 getActivity().onBackPressed();
             }
         });
@@ -184,7 +184,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        PostActivity.normal();
+        obj.normal();
         image.setClickable(true);
         mListener = null;
 

@@ -65,9 +65,14 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
             public void onClick(View v) {
 
                 Intent i = new Intent(context,PostActivity.class);
+                i.putExtra("isyoutube",OrgList.get(holder.getAdapterPosition()).isYoutube);
+                if(OrgList.get(holder.getAdapterPosition()).isYoutube){
+                    i.putExtra("ChannelId",OrgList.get(holder.getAdapterPosition()).channelID);
+                }
                 i.putExtra("pageid",OrgList.get(holder.getAdapterPosition()).pageid);
                 i.putExtra("pagename",OrgList.get(holder.getAdapterPosition()).org_name);
                 i.putExtra("logo_url",OrgList.get(holder.getAdapterPosition()).logo_url);
+
                 context.startActivity(i);
 
             }
