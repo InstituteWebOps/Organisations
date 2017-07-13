@@ -61,16 +61,15 @@ public class Fbfragment extends Fragment {
 
         Context context = view.getContext();
 
-        View v1 = view.findViewById(R.id.rv_list);
-        RecyclerView recyclerView = (RecyclerView) v1;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        View v1 = view.findViewById(R.id.rl_fb);
+        RecyclerView recyclerView = (RecyclerView)v1.findViewById(R.id.rv_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new PostApapter(context,postList,pactivity.key,pactivity.Pagename,pactivity.logo_url,pactivity.fragmentManager,pactivity.fragment,layout_MainMenu,pactivity.pd,pactivity.reactions_popup,pactivity.layout,pactivity.multipopup,pactivity.layout1);
+        adapter = new PostApapter(getActivity(),postList,pactivity.key,pactivity.Pagename,pactivity.logo_url,pactivity.fragmentManager,pactivity.fragment,layout_MainMenu,pactivity.pd,pactivity.reactions_popup,pactivity.layout,pactivity.multipopup,pactivity.layout1);
         recyclerView.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
 
-        container.addView(view);
         return view;
     }
 }
