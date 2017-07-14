@@ -5,7 +5,7 @@
     <string name="pageid">"884294325001601"</string>
     <string name="userid">"1834695056756669"</string>
     <string name="reaction_query">"reactions.type(LIKE).summary(total_count).limit(0).as(like),reactions.type(LOVE).summary(total_count).limit(0).as(love),reactions.type(WOW).summary(total_count).limit(0).as(wow),reactions.type(HAHA).summary(total_count).limit(0).as(haha),reactions.type(SAD).summary(total_count).limit(0).as(sad),reactions.type(ANGRY).summary(total_count).limit(0).as(angry)"</string>
-
+    <string name="mediaclubchannelid">"UCL54SxfvU26y-niXyi1VY9A"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

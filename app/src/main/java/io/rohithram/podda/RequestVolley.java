@@ -2,10 +2,7 @@ package io.rohithram.podda;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -16,8 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import io.rohithram.podda.Adapters.VideoItem;
-import io.rohithram.podda.Adapters.VideoitemList;
 
 /**
  * Created by rohithram on 12/7/17.
@@ -27,8 +25,7 @@ public class RequestVolley {
 
     Context context;
     public static  Boolean youtube_status = false;
-    PostActivity obj = new PostActivity();
-    public Void request(final String channelID, final Context context, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout) {
+    public Void request(final String channelID, final Context context, final ArrayList<VideoItem> videoList, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout) {
 
         this.context = context;
 
@@ -61,7 +58,8 @@ public class RequestVolley {
                                 vi.videoId = videoId;
                                 vi.videoTitle = title;
                                 vi.channelTitle = snippet.getString("channelTitle");
-                                if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
+                                videoList.add(vi);
+                                //if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
 
                             }
                         }
@@ -69,7 +67,7 @@ public class RequestVolley {
               so there is a "nextPagetoken" included if there are more results, this function(fetchdatafromNextPage()) takes care of them of them*/
                         if(videoIDJson.has("nextPageToken")) {
                             String nextpage = videoIDJson.getString("nextPageToken");
-                            fetchDatafromNextPage(nextpage,channelID);
+                            fetchDatafromNextPage(nextpage,channelID,videoList);
                         }
 
                         youtube_status=true;
@@ -98,7 +96,7 @@ public class RequestVolley {
         return null;
     }
 
-   private void fetchDatafromNextPage(String next, final String channelID){
+   private void fetchDatafromNextPage(String next, final String channelID, final ArrayList<VideoItem> videoList){
 
        String ytkey = DeveloperKey.DEVELOPER_KEY;
 
@@ -132,12 +130,14 @@ public class RequestVolley {
                                    VideoItem vi = new VideoItem();
                                    vi.videoId = videoId;
                                    vi.videoTitle = title;
-                                   if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
+                                   videoList.add(vi);
+                                   //if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
+
                                }
                            }
                            if(videoIDJson.has("nextPageToken")) {
                                String nextpage = videoIDJson.getString("nextPageToken");
-                               fetchDatafromNextPage(nextpage,channelID);
+                               fetchDatafromNextPage(nextpage,channelID, videoList);
                            }
                        } catch (JSONException e) {
                            e.printStackTrace();

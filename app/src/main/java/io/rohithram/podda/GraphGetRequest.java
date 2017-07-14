@@ -1,23 +1,9 @@
 package io.rohithram.podda;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.WorkerThread;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -26,12 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import io.rohithram.podda.Adapters.Postitemlist;
 
 
 /**
@@ -45,7 +26,7 @@ public class GraphGetRequest  {
 
 
 
-    public Void dorequest(final AccessToken key, String url, Bundle params, final ProgressDialog pd, final String reaction_url)  {
+    public Void dorequest(final AccessToken key, String url, Bundle params, final ArrayList<Posts> postList, final ProgressDialog pd, final String reaction_url)  {
 
         final GraphRequest request = new GraphRequest(
                 key,
@@ -154,10 +135,11 @@ public class GraphGetRequest  {
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();
                                                     } finally {
+                                                        postList.add(post);
                                                         //pd.dismiss();
-                                                        if(!Postitemlist.postList.contains(post)){
-                                                            Postitemlist.postList.add(post);
-                                                        }
+                                                       // if(!Postitemlist.postList.contains(post)){
+                                                         //   Postitemlist.postList.add(post);
+                                                        //}
                                                         if(finalI1 == postsjson.length()-1){
                                                            pd.dismiss();
                                                             if(PostActivity.isYoutube){

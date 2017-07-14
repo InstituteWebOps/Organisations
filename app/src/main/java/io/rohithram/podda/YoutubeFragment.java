@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import io.rohithram.podda.Adapters.VideoItem;
-import io.rohithram.podda.Adapters.VideoitemList;
 
 /**
  * Created by rohithram on 13/7/17.
@@ -72,8 +71,8 @@ public class YoutubeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        vadapter = new VideoAdapter(VideoitemList.videoList,getContext());
-        Log.i("Xsdsds", String.valueOf(VideoitemList.videoList.size()));
+        vadapter = new VideoAdapter(response1,getContext());
+        //Log.i("Xsdsds", String.valueOf(V.videoList.size()));
 
         recyclerView.setAdapter(vadapter);
         vadapter.notifyDataSetChanged();

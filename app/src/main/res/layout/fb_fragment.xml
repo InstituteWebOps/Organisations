@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainview"
-    android:foreground="@drawable/dim">
+android:id="@+id/mainview">
 
     <RelativeLayout
     android:orientation="vertical" android:layout_width="match_parent"
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_container">
-
     </FrameLayout>
 
 </RelativeLayout>

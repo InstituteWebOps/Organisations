@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
@@ -51,24 +52,34 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         holder.tv_channel.setText(videoList.get(holder.getAdapterPosition()).channelTitle);
 
-        holder.thumbnailView.initialize(DeveloperKey.DEVELOPER_KEY , new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader ThumbnailLoader) {
+        String url = "https://img.youtube.com/vi/";
+        String url_2 = "/0.jpg";
+        Glide.with(context).
+                load(url+videoList.get(position).videoId+url_2)
+                .placeholder(R.drawable.loading)
+                .crossFade(500)
+                .centerCrop()
+                .into(holder.thumbnailView);
 
-                youTubeThumbnailLoader = ThumbnailLoader;
+        //holder.thumbnailView.initialize(DeveloperKey.DEVELOPER_KEY , new YouTubeThumbnailView.OnInitializedListener() {
+          //  @Override
+            //public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader ThumbnailLoader) {
+
+              //  youTubeThumbnailLoader = ThumbnailLoader;
                /*if(playlistno.contains(position))                     //**** Required for playlist thumbnails
                     youTubeThumbnailLoader.setPlaylist(videoList.get(position).videoId);
                 else*/
 
-                    youTubeThumbnailLoader.setVideo(videoList.get(position).videoId);
-            }
+                //    youTubeThumbnailLoader.setVideo(videoList.get(position).videoId);
+           // }
 
-            @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+            //@Override
+            //public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
 
-            }
-        });
-        /* This onClickListner for thumnailview alone however onClickListner for whole cardview is also included*/
+            //}
+        //});
+
+        //This onClickListner for thumnailview alone however onClickListner for whole cardview is also included
         holder.thumbnailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

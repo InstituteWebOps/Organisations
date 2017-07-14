@@ -104,10 +104,6 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
         this.layout = view;
         this.multipopup = multipopup;
         this.layout1 = layout1;
-        Log.i("FREdwsdw",String.valueOf(Postlist.size()));
-
-
-
     }
 
 
@@ -374,9 +370,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                         android.graphics.Color.TRANSPARENT));
                                 multipopup.setOutsideTouchable(false);
 
-
-
-                            new Handler().postDelayed(new Runnable(){
+                                new Handler().postDelayed(new Runnable(){
                                 public void run() {
                                     multipopup.showAtLocation(v,Gravity.CENTER,0,0);
                                     obj.dim();

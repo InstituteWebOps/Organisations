@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:clickable="true"
-    android:background="#80000000"
+    android:background="#99000000"
     android:id="@+id/rl_multipopup">
 
 

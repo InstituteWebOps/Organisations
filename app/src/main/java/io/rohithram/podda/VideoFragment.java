@@ -37,8 +37,6 @@ public class VideoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
-
     PostActivity obj = new PostActivity();
     VideoView vid_post;
     ProgressBar progress_bar;

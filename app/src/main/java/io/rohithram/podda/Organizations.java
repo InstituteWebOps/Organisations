@@ -120,7 +120,7 @@ public class Organizations extends AppCompatActivity {
         }
     }
 
-    private void channelIDrequest(String username, final OrganisationObject org){
+    private void channelIDrequest(final String username, final OrganisationObject org){
         final JsonObjectRequest jsObjRequest1 = new JsonObjectRequest
                 (Request.Method.GET,yt_url+username+yt_url2+DeveloperKey.DEVELOPER_KEY, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -129,12 +129,18 @@ public class Organizations extends AppCompatActivity {
                             JSONObject jsonresponse = new JSONObject(response.toString());
                             JSONArray itemsjson = jsonresponse.getJSONArray("items");
                             JSONObject jsonitem =  itemsjson.getJSONObject(0);
+                            if(username.equalsIgnoreCase("mediaclubiitm")){
+                                org.channelID=getString(R.string.mediaclubchannelid);
+                            }
+                            else{
                             org.channelID = jsonitem.getString("id");
+                            }
                             org.isYoutube = true;
                             orgsList.add(org);
                             adapter = new OrganisationAdapter(Organizations.this, orgsList);
                             rv_org_list.setAdapter(adapter);
-                        } catch (JSONException e) {
+                        }
+                        catch (JSONException e) {
                             e.printStackTrace();
                             orgsList.add(org);
                             adapter = new OrganisationAdapter(Organizations.this, orgsList);
