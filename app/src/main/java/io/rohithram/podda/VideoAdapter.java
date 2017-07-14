@@ -59,7 +59,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                /*if(playlistno.contains(position))                     //**** Required for playlist thumbnails
                     youTubeThumbnailLoader.setPlaylist(videoList.get(position).videoId);
                 else*/
-                    youTubeThumbnailLoader.setVideo(videoList.get(holder.getAdapterPosition()).videoId);
+
+                    youTubeThumbnailLoader.setVideo(videoList.get(position).videoId);
             }
 
             @Override

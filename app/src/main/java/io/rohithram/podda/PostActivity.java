@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -30,14 +29,15 @@ import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
 
+import io.rohithram.podda.Adapters.Postitemlist;
 import io.rohithram.podda.Adapters.VideoItem;
 import io.rohithram.podda.Adapters.VideoitemList;
 
 
-public class PostActivity extends AppCompatActivity implements VideoFragment.OnFragmentInteractionListener {
+public class PostActivity extends AppCompatActivity implements VideoFragment.OnFragmentInteractionListener{
 
     TextView tv_post_des;
-    ArrayList<Posts> postList;
+    public  static ArrayList<Posts> postList;
     public  AccessToken key;
     public ImageView iv_content;
     public RecyclerView rv_list;
@@ -55,22 +55,40 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public View layout1,layout;
     public ProgressDialog pd;
     public  static VideoAdapter vadapter;
-    Boolean  isYoutube;
-    String channelID ;
-    ArrayList<VideoItem> videoList;
+    static Boolean  isYoutube;
+    public  static String channelID ;
+    public static ArrayList<VideoItem> videoList;
+    static OrgPagerAdapter pageadapter;
+    public static  OrgPagerAdapter pageadapter1;
+    static ViewPager viewPager;
+    public static Boolean fbhttprequest = false;
+    public static Boolean ythttprequest = false;
+    public static TabLayout tabLayout;
 
+    String pageid;
+    String appid ;
+    String reaction_url;
 
 
 
     @Override
-    protected void onCreate(Bundle onRetainNonConfigurationChanges) {
-        super.onCreate(onRetainNonConfigurationChanges);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+        tabLayout.setTabMode(TabLayout.GRAVITY_CENTER);
 
         String apptoken = getString(R.string.Apptoken);
-        final String pageid;
-        String appid = getString(R.string.facebook_app_id);
-        String reaction_url = getString(R.string.reaction_query);
+
+        appid = getString(R.string.facebook_app_id);
+        reaction_url = getString(R.string.reaction_query);
 
         Intent i = getIntent();
         isYoutube = i.getBooleanExtra("isyoutube", false);
@@ -82,33 +100,8 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         logo_url = i.getStringExtra("logo_url");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-
-
-
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
-
-
-            //layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
-            //layout_MainMenu.getForeground().setAlpha( 0);
+        //layout_MainMenu = (FrameLayout) findViewById( R.id.mainview);
+        //layout_MainMenu.getForeground().setAlpha( 0);
 
             containerLayout = (CardView) findViewById(R.id.cv_popup);
 
@@ -153,7 +146,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
                 // However, if we're being restored from a previous state,
                 // then we don't need to do anything and should return or else
                 // we could end up with overlapping fragments.
-                if (onRetainNonConfigurationChanges != null) {
+                if (savedInstanceState != null) {
                     return;
                 }
                 // Create a new Fragment to be placed in the activity layout
@@ -181,20 +174,38 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         /* make the API call */
 
+        key = new AccessToken(apptoken, appid, getString(R.string.userid), null, null, AccessTokenSource.FACEBOOK_APPLICATION_NATIVE, null, null);
+        getdata();
+        callviewpager();
 
-        if(isYoutube){
-           videoList =  VideoitemList.getVideoList(channelID,PostActivity.this,isYoutube,viewPager,tabLayout);
-        }
-            key = new AccessToken(apptoken, appid, getString(R.string.userid), null, null, AccessTokenSource.FACEBOOK_APPLICATION_NATIVE, null, null);
-            GraphGetRequest request = new GraphGetRequest();
+        /*GraphGetRequest request = new GraphGetRequest();
             try {
                 request.dorequest(key, pageid + "/posts", null, postList, pd, reaction_url,isYoutube,viewPager,tabLayout);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
 
+    public void getdata(){
+        if(isYoutube){
+            videoList  =  VideoitemList.getVideoList(channelID,PostActivity.this,isYoutube,viewPager,tabLayout);
+        }
+        postList = Postitemlist.getPostList(key,pageid,pd,reaction_url) ;
+
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isYoutube) {
+            VideoitemList.videoList.clear();
+            ythttprequest = false;
+        }
+        Postitemlist.postList.clear();
+        fbhttprequest = false;
+        getdata();
+    }
 
     public void dim(){
        // layout_MainMenu.getForeground().setAlpha(160);
@@ -208,42 +219,53 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     public void onFragmentInteraction(Uri uri) {
     }
 
+    public  void callviewpager(){
+
+        if(videoList!=null && postList!=null ){
+            if (isYoutube) {
+                setupViewPager(viewPager);
+                if (tabLayout != null) {
+                    tabLayout.setupWithViewPager(viewPager);
+                    tabLayout.setVisibility(View.VISIBLE);
+                }
+            }
+            else if(!isYoutube) {
+                setupViewPagerNoYoutube(viewPager);
+                if (tabLayout != null) {
+                    tabLayout.setupWithViewPager(viewPager);
+                    tabLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
 
 
-    public void setupViewPager(ViewPager mviewPager, ArrayList<Posts> Postlist ) {
-
-        OrgPagerAdapter pageadapter = new OrgPagerAdapter(getSupportFragmentManager());
-       // mviewPager = (ViewPager) findViewById(R.id.pager);
-
-        mviewPager.setAdapter(pageadapter);
-
+    public void setupViewPager(final ViewPager mviewPager) {
+        pageadapter = new OrgPagerAdapter(getSupportFragmentManager());
         Fbfragment fbfragment = new Fbfragment();
         YoutubeFragment youtubeFragment = new YoutubeFragment();
-
-        fbfragment.setResponse(Postlist);
-
-        Log.i("VdvvEVE",String.valueOf(Postlist.size()));
-        youtubeFragment.setResponse(videoList,channelID);
+        fbfragment.setResponse(postList,viewPager);
+        Log.i("VdvvEVE",String.valueOf(postList.size()));
+        youtubeFragment.setResponse(videoList,channelID,viewPager);
+        Log.i("CDCsds",String.valueOf(videoList.size()));
+        Log.i("DDsdsd",channelID);
 
         pageadapter.addFragment(fbfragment,"Facebook");
         pageadapter.addFragment(youtubeFragment,"Youtube");
         mviewPager.setAdapter(pageadapter);
+        pageadapter.notifyDataSetChanged();
     }
 
-    public void setupViewPagerNoYoutube(ViewPager mviewPager, ArrayList<Posts> postlist) {
+    public void setupViewPagerNoYoutube(ViewPager mviewPager) {
 
-        OrgPagerAdapter pageadapter = new OrgPagerAdapter(getSupportFragmentManager());
-        //mviewPager = (ViewPager) findViewById(R.id.pager);
-
-        mviewPager.setAdapter(pageadapter);
-
+        pageadapter1 = new OrgPagerAdapter(getSupportFragmentManager());
         Fbfragment fbfragment = new Fbfragment();
-
-        fbfragment.setResponse(postlist);
-
-        pageadapter.addFragment(fbfragment,"Facebook");
-        mviewPager.setAdapter(pageadapter);
+        fbfragment.setResponse(postList, viewPager);
+        pageadapter1.addFragment(fbfragment,"Facebook");
+        mviewPager.setAdapter(pageadapter1);
+        pageadapter1.notifyDataSetChanged();
     }
+
 }
 
 

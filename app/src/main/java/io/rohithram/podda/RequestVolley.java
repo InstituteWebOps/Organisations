@@ -2,7 +2,9 @@ package io.rohithram.podda;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.android.volley.Request;
@@ -24,6 +26,7 @@ import io.rohithram.podda.Adapters.VideoitemList;
 public class RequestVolley {
 
     Context context;
+    public static  Boolean youtube_status = false;
     PostActivity obj = new PostActivity();
     public Void request(final String channelID, final Context context, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout) {
 
@@ -69,13 +72,15 @@ public class RequestVolley {
                             fetchDatafromNextPage(nextpage,channelID);
                         }
 
-
+                        youtube_status=true;
 
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }finally {
-                        //OrganPage.progressBar.setVisibility(View.GONE);
+                        PostActivity
+                                .pageadapter.notifyDataSetChanged();
+                       // PostActivity.ythttprequest = true;
 
                     }
                 }

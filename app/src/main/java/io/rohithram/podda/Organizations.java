@@ -107,9 +107,12 @@ public class Organizations extends AppCompatActivity {
                                     case 10:channelIDrequest(yt_username.get(3),org);break;
                                     case 11:channelIDrequest(yt_username.get(4),org);break;
                                     case 15:channelIDrequest(yt_username.get(5),org);break;
+                                    default:org.isYoutube = false;
+                                            org.channelID = null;
+                                            orgsList.add(org);
+                                            adapter = new OrganisationAdapter(Organizations.this, orgsList);
+                                            rv_org_list.setAdapter(adapter);
                                 }
-
-
                             }
                         }
                     });
@@ -133,6 +136,9 @@ public class Organizations extends AppCompatActivity {
                             rv_org_list.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            orgsList.add(org);
+                            adapter = new OrganisationAdapter(Organizations.this, orgsList);
+                            rv_org_list.setAdapter(adapter);
                         }
 
                     }

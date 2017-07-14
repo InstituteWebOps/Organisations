@@ -1,8 +1,10 @@
 package io.rohithram.podda;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,20 +22,27 @@ import io.rohithram.podda.Adapters.VideoitemList;
  * Created by rohithram on 13/7/17.
  */
 
-public class YoutubeFragment extends Fragment{
+public class YoutubeFragment extends Fragment {
 
-    ArrayList <VideoItem> response;
+    ArrayList<VideoItem> response1;
     static VideoAdapter vadapter;
     String channelID;
+    ViewPager viewPager;
+    RecyclerView recyclerView;
 
 
     public YoutubeFragment() {
+        //Log.i("DDDDDD",channelID);
+
         // Required empty public constructor
     }
 
-    public void setResponse(ArrayList<VideoItem> response,String channelID) {
+    public void setResponse(ArrayList<VideoItem> response, String channelID, ViewPager viewPager) {
         this.channelID = channelID;
-        this.response = response;
+        Log.i("DDDDDD", channelID);
+        this.response1 = response;
+        this.viewPager = viewPager;
+        // Log.i("DFEFFX", String.valueOf(response1.get(4).channelTitle));
     }
 
     @Override
@@ -45,18 +54,28 @@ public class YoutubeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.youtube_fragment
                 , container, false);
         PostActivity obj = new PostActivity();
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.videorv);
+        recyclerView = (RecyclerView) view.findViewById(R.id.videorv);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        vadapter = new VideoAdapter(response,context);
+        vadapter = new VideoAdapter(response1, context);
         recyclerView.setAdapter(vadapter);
-        Log.i("Xsdsds",String.valueOf(VideoitemList.videoList));
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        vadapter = new VideoAdapter(VideoitemList.videoList,getContext());
+        Log.i("Xsdsds", String.valueOf(VideoitemList.videoList.size()));
+
+        recyclerView.setAdapter(vadapter);
+        vadapter.notifyDataSetChanged();
     }
 }

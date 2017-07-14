@@ -10,8 +10,8 @@ public class OrganisationObject {
     String org_name;
     String pageid;
     String org_about;
-    Boolean isYoutube ;
-    String channelID ;
+    Boolean isYoutube = false ;
+    String channelID = " ";
 
     public  OrganisationObject(String logo_url,String org_name,String pageid,String org_about){
         this.logo_url = logo_url;

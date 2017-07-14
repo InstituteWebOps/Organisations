@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import io.rohithram.podda.Adapters.Postitemlist;
+
 
 /**
  * Created by rohithram on 28/6/17.
@@ -38,11 +40,12 @@ import java.util.concurrent.ExecutionException;
 
 public class GraphGetRequest  {
 
-    Fbfragment fbfragment = new Fbfragment();
+    public  static Boolean fb_status = false;
     PostActivity obj = new PostActivity();
 
 
-    public Void dorequest(final AccessToken key, String url, Bundle params, final ArrayList<Posts> Postlist, final ProgressDialog pd, final String reaction_url, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout)  {
+
+    public Void dorequest(final AccessToken key, String url, Bundle params, final ProgressDialog pd, final String reaction_url)  {
 
         final GraphRequest request = new GraphRequest(
                 key,
@@ -54,7 +57,7 @@ public class GraphGetRequest  {
                     public void onCompleted(GraphResponse response) {
                         try {
                             final JSONObject jsonresponse = new JSONObject(String.valueOf(response.getJSONObject()));
-                            JSONArray postsjson = jsonresponse.getJSONArray("data");
+                            final JSONArray postsjson = jsonresponse.getJSONArray("data");
                             for (int i = 0; i < postsjson.length(); i++) {
                                 JSONObject postjs = postsjson.getJSONObject(i);
                                 if(postjs.has("id")) {
@@ -66,6 +69,8 @@ public class GraphGetRequest  {
                                     }
 
                                     post.created_time = postjs.getString("created_time");
+                                    final int finalI = i;
+                                    final int finalI1 = i;
                                     new GraphRequest(key,
                                             post.id + "/?fields=" + reaction_url + ",type,source,full_picture,attachments,reactions.summary(true){total_count}",
                                             null,
@@ -149,23 +154,24 @@ public class GraphGetRequest  {
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();
                                                     } finally {
-                                                        pd.dismiss();
-                                                        Postlist.add(post);
-                                                        if (isYoutube) {
-                                                            obj.setupViewPager(viewPager,Postlist);
-                                                            if (tabLayout != null) {
-                                                                tabLayout.setupWithViewPager(viewPager);
-                                                                tabLayout.setVisibility(View.VISIBLE);
-                                                            } else {
-                                                                obj.setupViewPagerNoYoutube(viewPager,Postlist);
-                                                                if (tabLayout != null) {
-                                                                    tabLayout.setupWithViewPager(viewPager);
-                                                                    tabLayout.setVisibility(View.VISIBLE);
-                                                                }
+                                                        //pd.dismiss();
+                                                        if(!Postitemlist.postList.contains(post)){
+                                                            Postitemlist.postList.add(post);
+                                                        }
+                                                        if(finalI1 == postsjson.length()-1){
+                                                           pd.dismiss();
+                                                            if(PostActivity.isYoutube){
+                                                            PostActivity.pageadapter.notifyDataSetChanged();
                                                             }
+                                                            else{
+                                                                PostActivity
+                                                                        .pageadapter1.notifyDataSetChanged();
+                                                            }
+
                                                         }
                                                         //fbfragment.setResponse(Postlist);
                                                         //fbfragment.adapter.notifyDataSetChanged();
+                                                        //
                                                     }
                                                 }
                                             }).executeAsync();
@@ -173,10 +179,14 @@ public class GraphGetRequest  {
                                 }
                             }
 
+
+
                         }catch (JSONException e) {
                                 e.printStackTrace();
                         }finally {
+                            //PostActivity.fbhttprequest=true;
                         }
+
                     }
                 });
         request.executeAsync();
