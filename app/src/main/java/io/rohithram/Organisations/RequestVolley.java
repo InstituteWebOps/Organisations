@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import io.rohithram.podda.Adapters.VideoItem;
+import io.rohithram.Organisations.Adapters.VideoItem;
 
 /**
  * Created by rohithram on 12/7/17.
@@ -24,7 +24,6 @@ import io.rohithram.podda.Adapters.VideoItem;
 public class RequestVolley {
 
     Context context;
-    public static  Boolean youtube_status = false;
     public Void request(final String channelID, final Context context, final ArrayList<VideoItem> videoList, final Boolean isYoutube, final ViewPager viewPager, final TabLayout tabLayout) {
 
         this.context = context;
@@ -45,8 +44,8 @@ public class RequestVolley {
                             JSONObject id = item.getJSONObject("id");
 
                             String kind = id.getString("kind");
-                            if(kind.equals("youtube#playlist")){  // If want to add playlists ,then there some code to be added here.
-
+                            if(kind.equals("youtube#playlist")){
+                                // If want to add playlists ,then there some code to be added here.
                                 continue;
                             }
                             else {
@@ -59,7 +58,6 @@ public class RequestVolley {
                                 vi.videoTitle = title;
                                 vi.channelTitle = snippet.getString("channelTitle");
                                 videoList.add(vi);
-                                //if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
 
                             }
                         }
@@ -70,15 +68,12 @@ public class RequestVolley {
                             fetchDatafromNextPage(nextpage,channelID,videoList);
                         }
 
-                        youtube_status=true;
 
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }finally {
-                        PostActivity
-                                .pageadapter.notifyDataSetChanged();
-                       // PostActivity.ythttprequest = true;
+                        PostActivity.pageadapter.notifyDataSetChanged();
 
                     }
                 }
@@ -131,7 +126,6 @@ public class RequestVolley {
                                    vi.videoId = videoId;
                                    vi.videoTitle = title;
                                    videoList.add(vi);
-                                   //if(!VideoitemList.videoList.contains(vi)) VideoitemList.videoList.add(vi);
 
                                }
                            }

@@ -1,17 +1,13 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -39,7 +35,6 @@ public class Organizations extends AppCompatActivity {
     public RecyclerView rv_org_list;
     public OrganisationAdapter adapter;
     String[] PagesList;
-    Context context;
     AccessToken key;
     final String yt_url = "https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=";
     final String yt_url2 ="&key=";
@@ -49,6 +44,12 @@ public class Organizations extends AppCompatActivity {
     protected void onCreate(Bundle onRetainNonConfigurationChanges) {
         super.onCreate(onRetainNonConfigurationChanges);
         setContentView(R.layout.organisation);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
 
         String apptoken = getString(R.string.Apptoken);
         String appid = getString(R.string.facebook_app_id);
@@ -119,6 +120,7 @@ public class Organizations extends AppCompatActivity {
             request.executeAsync();
         }
     }
+
 
     private void channelIDrequest(final String username, final OrganisationObject org){
         final JsonObjectRequest jsObjRequest1 = new JsonObjectRequest

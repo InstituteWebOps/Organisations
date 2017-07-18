@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="42dp"
     android:clickable="true"
-    tools:context="io.rohithram.podda.VideoFragment">
+    tools:context="io.rohithram.Organisations.VideoFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

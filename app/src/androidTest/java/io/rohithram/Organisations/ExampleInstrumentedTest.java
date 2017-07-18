@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

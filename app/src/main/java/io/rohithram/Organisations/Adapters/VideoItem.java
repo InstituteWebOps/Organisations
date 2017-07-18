@@ -1,4 +1,4 @@
-package io.rohithram.podda.Adapters;
+package io.rohithram.Organisations.Adapters;
 
 /**
  * Created by Srikanth on 6/22/2017.

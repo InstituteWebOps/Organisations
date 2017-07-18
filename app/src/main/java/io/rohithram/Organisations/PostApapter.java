@@ -1,44 +1,29 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.opengl.Visibility;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +31,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
+
 import com.facebook.share.widget.LikeView;
-import com.stfalcon.multiimageview.MultiImageView;
+import com.google.android.youtube.player.YouTubeIntents;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,14 +42,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static android.R.attr.homeLayout;
-import static android.R.attr.id;
-import static android.R.attr.layout_below;
-import static android.R.attr.targetActivity;
-import static android.R.attr.theme;
-import static android.R.attr.type;
+
 
 /**
  * Created by rohithram on 23/6/17.
@@ -118,9 +97,6 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
-
-
         final String type = Postlist.get(holder.getAdapterPosition()).type;
         final String  s = "video";
         final String s1 = "youtube.com";
@@ -138,14 +114,13 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.iv_org);
 
-        holder.fblike.setOnClickListener(new View.OnClickListener() {
+        /*holder.fblike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 holder.fblike.setObjectIdAndType(
                         Postlist.get(holder.getAdapterPosition()).id,
                         LikeView.ObjectType.OPEN_GRAPH);
-                Log.i("XDEf","successfully liked");
 
 
                 new GraphRequest(
@@ -155,13 +130,12 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                         HttpMethod.POST,
                         new GraphRequest.Callback() {
                             public void onCompleted(GraphResponse response) {
-                                Log.i("SUCCEESS","successfully liked");
                             }
                         }
                 ).executeAsync();
 
             }
-        });
+        });*/
 
 
         if(Postlist.get(holder.getAdapterPosition()).type!=null && Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("photo") || Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") ) {
@@ -335,10 +309,7 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                             }
                         });
-
-
-
-                    holder.rv_gridimages.setOnClickListener(new View.OnClickListener() {
+                holder.rv_gridimages.setOnClickListener(new View.OnClickListener() {
                         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                         @Override
                         public void onClick(final View v) {
@@ -436,10 +407,6 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
 
                         }
                     });
-
-
-
-
             }
 
             if (Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("video") && !Postlist.get(holder.getAdapterPosition()).type.equalsIgnoreCase("status")) {
@@ -583,11 +550,32 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
                                transaction.commit();
 
                            } else {
-                               context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Postlist.get(holder.getAdapterPosition()).vid_url)));
+                               String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+                               String videoid;
+                               Pattern compiledPattern = Pattern.compile(pattern);
+                               Matcher matcher = compiledPattern.matcher(Postlist.get(holder.getAdapterPosition()).vid_url); //url is youtube url for which you want to extract the id.
+                               if (matcher.find()) {
+                                   videoid = matcher.group();
+                               }
+                               else {
+                                   videoid = null;
+                               }
+
+                               if(videoid!=null) {
+
+                                   Intent intent = null;
+                                   intent = YouTubeIntents.createPlayVideoIntentWithOptions(context,videoid,true, false);
+                                   context.startActivity(intent);
+                               }
+                               else {
+                                   Toast.makeText(context,"Sorry, There was some error",Toast.LENGTH_SHORT);
+                               }
+                           }
+
 
                            }
                        }
-                   }
+
                });
            }
     }
@@ -708,7 +696,6 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             iv_content = (ImageView) itemView.findViewById(R.id.iv_content);
             fblike = (LikeView) itemView.findViewById(R.id.fb_like);
 
-
             tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
             tv_time = (TextView)itemView.findViewById(R.id.tv_time);
             iv_videocover=(ImageView)itemView.findViewById(R.id.iv_videocover);
@@ -723,8 +710,6 @@ public class PostApapter extends RecyclerView.Adapter <PostApapter.ViewHolder>  
             iv_image13 = (ImageView)itemView.findViewById(R.id.iv_image13);
             iv_image21 = (ImageView)itemView.findViewById(R.id.iv_image21);
             iv_image22 = (ImageView)itemView.findViewById(R.id.iv_image22);
-
-
 
             iv_1 = (ImageView)itemView.findViewById(R.id.iv_1);
             iv_2 = (ImageView)itemView.findViewById(R.id.iv_2);

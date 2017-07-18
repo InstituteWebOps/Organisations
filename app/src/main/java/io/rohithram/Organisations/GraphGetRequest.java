@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -20,11 +20,6 @@ import java.util.ArrayList;
  */
 
 public class GraphGetRequest  {
-
-    public  static Boolean fb_status = false;
-    PostActivity obj = new PostActivity();
-
-
 
     public Void dorequest(final AccessToken key, String url, Bundle params, final ArrayList<Posts> postList, final ProgressDialog pd, final String reaction_url)  {
 
@@ -136,39 +131,27 @@ public class GraphGetRequest  {
                                                         e.printStackTrace();
                                                     } finally {
                                                         postList.add(post);
-                                                        //pd.dismiss();
-                                                       // if(!Postitemlist.postList.contains(post)){
-                                                         //   Postitemlist.postList.add(post);
-                                                        //}
                                                         if(finalI1 == postsjson.length()-1){
-                                                           pd.dismiss();
+                                                            pd.dismiss();
                                                             if(PostActivity.isYoutube){
                                                             PostActivity.pageadapter.notifyDataSetChanged();
                                                             }
                                                             else{
-                                                                PostActivity
-                                                                        .pageadapter1.notifyDataSetChanged();
+                                                                PostActivity.pageadapter1.notifyDataSetChanged();
                                                             }
 
                                                         }
-                                                        //fbfragment.setResponse(Postlist);
-                                                        //fbfragment.adapter.notifyDataSetChanged();
-                                                        //
+
                                                     }
                                                 }
                                             }).executeAsync();
-
                                 }
                             }
-
-
-
                         }catch (JSONException e) {
                                 e.printStackTrace();
                         }finally {
-                            //PostActivity.fbhttprequest=true;
-                        }
 
+                        }
                     }
                 });
         request.executeAsync();

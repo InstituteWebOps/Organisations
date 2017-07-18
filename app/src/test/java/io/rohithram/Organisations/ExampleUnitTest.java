@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import org.junit.Test;
 

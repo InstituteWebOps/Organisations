@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -6,11 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +29,6 @@ import android.widget.VideoView;
  */
 public class VideoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -90,22 +85,15 @@ public class VideoFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_video, container, false);
 
-        //getDialog().setCanceledOnTouchOutside(true);
-
         viewpost = getActivity().findViewById(R.id.cv_post);
         image = (ImageView) viewpost.findViewById(R.id.iv_content);
         image.setClickable(false);
-
-
-
-
 
         vid_post = (VideoView)view.findViewById(R.id.vid_post);
         progress_bar = (ProgressBar)view.findViewById(R.id.progressbar);
         bt_dismiss = (ImageButton)view.findViewById(R.id.bt_dismiss);
 
         Uri uri = Uri.parse(video_url);
-
         vid_post.setVideoURI(uri);
 
         MediaController mediaController = new MediaController(getContext());
@@ -150,10 +138,6 @@ public class VideoFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-
-
-
-
         return view;
 
     }

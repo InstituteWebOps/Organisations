@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
-import io.rohithram.podda.Adapters.VideoItem;
+import io.rohithram.Organisations.Adapters.VideoItem;
 
 
 import java.util.ArrayList;
@@ -54,6 +53,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         String url = "https://img.youtube.com/vi/";
         String url_2 = "/0.jpg";
+
         Glide.with(context).
                 load(url+videoList.get(position).videoId+url_2)
                 .placeholder(R.drawable.loading)
@@ -61,35 +61,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 .centerCrop()
                 .into(holder.thumbnailView);
 
-        //holder.thumbnailView.initialize(DeveloperKey.DEVELOPER_KEY , new YouTubeThumbnailView.OnInitializedListener() {
-          //  @Override
-            //public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader ThumbnailLoader) {
-
-              //  youTubeThumbnailLoader = ThumbnailLoader;
-               /*if(playlistno.contains(position))                     //**** Required for playlist thumbnails
-                    youTubeThumbnailLoader.setPlaylist(videoList.get(position).videoId);
-                else*/
-
-                //    youTubeThumbnailLoader.setVideo(videoList.get(position).videoId);
-           // }
-
-            //@Override
-            //public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-
-            //}
-        //});
-
         //This onClickListner for thumnailview alone however onClickListner for whole cardview is also included
+
         holder.thumbnailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = null;
-                                                     //********Required for playlist thumbnails
+
+                //********Required for playlist thumbnails
                 /*if(playlistno.contains(position))
                     intent = YouTubeIntents.createPlayPlaylistIntent(context,videoList.get(position).videoId);
                 else*/
-                    intent = YouTubeIntents.createPlayVideoIntentWithOptions(context,videoList.get(holder.getAdapterPosition()).videoId,true,false);
+
+                intent = YouTubeIntents.createPlayVideoIntentWithOptions(context,videoList.get(holder.getAdapterPosition()).videoId,true,false);
                 context.startActivity(intent);
 
             }
@@ -99,11 +84,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             @Override
             public void onClick(View v) {
                 Intent intent = null;
-                                               //********Required for playlist thumbnails
+                //********Required for playlist thumbnails
                 /*if(playlistno.contains(position))
                     intent = YouTubeIntents.createPlayPlaylistIntent(context,videoList.get(position).videoId);
                 else*/
-                    intent = YouTubeIntents.createPlayVideoIntentWithOptions(context,videoList.get(holder.getAdapterPosition()).videoId,true,false);
+                intent = YouTubeIntents.createPlayVideoIntentWithOptions(context,videoList.get(holder.getAdapterPosition()).videoId,true,false);
                 context.startActivity(intent);
             }
         });

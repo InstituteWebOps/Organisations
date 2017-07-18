@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -44,11 +43,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
         String about = OrgList.get(holder.getAdapterPosition()).org_about;
         holder.tv_org_about.setText(about);
 
-        /*mImageLoader.get(OrgList.get(holder.getAdapterPosition()).logo_url, ImageLoader.getImageListener(holder.iv_org_logo
-                ,R.drawable.loading_icon
-                ,android.R.drawable.ic_dialog_alert));
-
-        holder.iv_org_logo.setImageUrl(OrgList.get(holder.getAdapterPosition()).logo_url, mImageLoader);*/
 
         Glide.with(context)
                 .load(OrgList.get(holder.getAdapterPosition()).logo_url)
@@ -56,7 +50,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter <OrganisationAdapt
                 .error(null)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.iv_org_logo);
-       //imageLoader.displayImage(OrgList.get(holder.getAdapterPosition()).logo_url,holder.iv_org_logo);
 
         holder.cv_org_item.setFocusable(true);
 

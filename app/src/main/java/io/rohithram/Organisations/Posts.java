@@ -1,7 +1,6 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by rohithram on 23/6/17.

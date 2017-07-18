@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 /**
  * Created by rohithram on 2/7/17.

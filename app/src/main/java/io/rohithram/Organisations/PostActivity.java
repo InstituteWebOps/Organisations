@@ -1,4 +1,4 @@
-package io.rohithram.podda;
+package io.rohithram.Organisations;
 
 
 import android.app.ProgressDialog;
@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
 
-import io.rohithram.podda.Adapters.VideoItem;
+import io.rohithram.Organisations.Adapters.VideoItem;
 
 
 public class PostActivity extends AppCompatActivity implements VideoFragment.OnFragmentInteractionListener{
@@ -48,15 +47,11 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
     static OrgPagerAdapter pageadapter;
     public static  OrgPagerAdapter pageadapter1;
     static ViewPager viewPager;
-    public static Boolean fbhttprequest = false;
-    public static Boolean ythttprequest = false;
     public static TabLayout tabLayout;
 
     String pageid;
     String appid ;
     String reaction_url;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +59,9 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         setContentView(R.layout.pager_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabMode(TabLayout.GRAVITY_CENTER);
 
@@ -84,9 +78,6 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         pageid = i.getStringExtra("pageid");
         Pagename = i.getStringExtra("pagename");
         logo_url = i.getStringExtra("logo_url");
-
-
-
 
         containerLayout = (CardView) findViewById(R.id.cv_popup);
         reactions_popup = new PopupWindow(PostActivity.this);
@@ -115,10 +106,6 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         arg.putString("intialvalue", "initialisable");
 
         View layout3 = inflater.inflate(R.layout.fb_fragment, (ViewGroup) findViewById(R.id.mainview));
-
-        /*View layout4 = inflater.inflate(R.layout.fb_fragment,(ViewGroup)findViewById(R.id.mainview));
-        layout_MainMenu = (FrameLayout) layout4;
-        layout_MainMenu.getForeground().setAlpha(0);*/
 
         if (layout3.findViewById(R.id.fragment_container) != null) {
             // However, if we're being restored from a previous state,
@@ -180,11 +167,11 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
                 }
             }
             else if(!isYoutube) {
+                tabLayout.setVisibility(View.INVISIBLE);
+                tabLayout.getLayoutParams().width = 0;
+                tabLayout.getLayoutParams().height = 0;
                 setupViewPagerNoYoutube(viewPager);
-                if (tabLayout != null) {
-                    tabLayout.setupWithViewPager(viewPager);
-                    tabLayout.setVisibility(View.VISIBLE);
-                }
+
             }
         }
     }
@@ -196,13 +183,9 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         Fbfragment fbfragment = new Fbfragment();
         YoutubeFragment youtubeFragment = new YoutubeFragment();
         fbfragment.setResponse(postList,viewPager);
-        Log.i("VdvvEVE",String.valueOf(postList.size()));
         youtubeFragment.setResponse(videoList,channelID,viewPager);
-        Log.i("CDCsds",String.valueOf(videoList.size()));
-        Log.i("DDsdsd",channelID);
-
-        pageadapter.addFragment(fbfragment,"Facebook");
-        pageadapter.addFragment(youtubeFragment,"Youtube");
+        pageadapter.addFragment(fbfragment,"Feed");
+        pageadapter.addFragment(youtubeFragment,"Videos");
         mviewPager.setAdapter(pageadapter);
         pageadapter.notifyDataSetChanged();
     }
@@ -212,10 +195,11 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         pageadapter1 = new OrgPagerAdapter(getSupportFragmentManager());
         Fbfragment fbfragment = new Fbfragment();
         fbfragment.setResponse(postList, viewPager);
-        pageadapter1.addFragment(fbfragment,"Facebook");
+        pageadapter1.addFragment(fbfragment,"Feed");
         mviewPager.setAdapter(pageadapter1);
         pageadapter1.notifyDataSetChanged();
     }
+
     public void dim(){
         //layout_MainMenu.getForeground().setAlpha(160);
     }
