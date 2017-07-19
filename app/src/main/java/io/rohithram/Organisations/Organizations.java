@@ -35,7 +35,7 @@ public class Organizations extends AppCompatActivity {
     public RecyclerView rv_org_list;
     public OrganisationAdapter adapter;
     String[] PagesList;
-    AccessToken key;
+    public static AccessToken key;
     final String yt_url = "https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=";
     final String yt_url2 ="&key=";
     OrganisationObject org = null;
@@ -49,7 +49,7 @@ public class Organizations extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+        getSupportActionBar().setTitle("Organisations in IITM");
 
         String apptoken = getString(R.string.Apptoken);
         String appid = getString(R.string.facebook_app_id);

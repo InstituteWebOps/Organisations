@@ -59,6 +59,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         setContentView(R.layout.pager_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -78,6 +79,8 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
         pageid = i.getStringExtra("pageid");
         Pagename = i.getStringExtra("pagename");
         logo_url = i.getStringExtra("logo_url");
+
+        setTitle(Pagename);
 
         containerLayout = (CardView) findViewById(R.id.cv_popup);
         reactions_popup = new PopupWindow(PostActivity.this);
@@ -130,7 +133,7 @@ public class PostActivity extends AppCompatActivity implements VideoFragment.OnF
 
         /* make the API call */
 
-        key = new AccessToken(apptoken, appid, getString(R.string.userid), null, null, AccessTokenSource.FACEBOOK_APPLICATION_NATIVE, null, null);
+        key = Organizations.key;
         getdata();
         callviewpager();
 
